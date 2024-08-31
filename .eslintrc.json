@@ -1,8 +1,7 @@
 {
   "extends": [
     "plugin:@typescript-eslint/recommended",
-    "next/core-web-vitals",
-    "plugin:prettier/recommended"
+    "next/core-web-vitals"
   ],
   "parser": "@typescript-eslint/parser",
   "rules": {
@@ -18,8 +17,7 @@
     "@typescript-eslint/no-empty-object-type": [
       "error",
       { "allowInterfaces": "with-single-extends" }
-    ],
-    "prettier/prettier": "error"
+    ]
   },
   "ignorePatterns": [
     "node_modules",
