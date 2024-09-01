@@ -5,7 +5,7 @@ export const useAutoResize = (
   canvas: Canvas | null,
   container: HTMLDivElement | null
 ) => {
-  const autoZoom = useCallback(() => {
+  const autoZoom = useCallback(async () => {
     if (!canvas || !container) return;
 
     const width = container.offsetWidth;
@@ -32,8 +32,8 @@ export const useAutoResize = (
 
     const zoom = zoomRatio * scale;
 
-    // canvas.setViewportTransform(iMatrix.concat());
-    canvas?.zoomToPoint(new Point(center.x, center.y), zoom);
+    canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+    canvas.zoomToPoint(new Point(center.x, center.y), zoom);
 
     const workspaceCenter = localWorkspace.getCenterPoint();
     const viewportTransform = canvas.viewportTransform;
@@ -52,10 +52,9 @@ export const useAutoResize = (
 
     canvas.setViewportTransform(viewportTransform);
 
-    localWorkspace.clone().then((cloned) => {
-      canvas.clipPath = cloned;
-      canvas.requestRenderAll();
-    });
+    const cloned = await localWorkspace.clone();
+    canvas.clipPath = cloned;
+    canvas.requestRenderAll();
   }, [canvas, container]);
 
   useEffect(() => {
