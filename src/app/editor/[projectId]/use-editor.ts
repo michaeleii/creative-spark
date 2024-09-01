@@ -1,7 +1,31 @@
-import { useCallback } from "react";
-import { InteractiveFabricObject, Rect, Shadow, type Canvas } from "fabric";
+import { useCallback, useState } from "react";
+import {
+  FabricObject,
+  InteractiveFabricObject,
+  Rect,
+  Shadow,
+  type Canvas,
+} from "fabric";
+import { useAutoResize } from "./use-auto-resize";
+
+interface CustomFabricObjectProps {
+  id?: string;
+  name?: string;
+}
+
+declare module "fabric" {
+  interface FabricObject extends CustomFabricObjectProps {}
+  interface SerializedOjectProps extends CustomFabricObjectProps {}
+}
+
+FabricObject.customProperties = ["id", "name"];
 
 export function useEditor() {
+  const [canvas, setCanvas] = useState<Canvas | null>(null);
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
+
+  useAutoResize(canvas, container);
+
   const init = useCallback(
     (initialCanvas: Canvas, initialContainer: HTMLDivElement) => {
       InteractiveFabricObject.ownDefaults = {
@@ -15,9 +39,9 @@ export function useEditor() {
         cornerStrokeColor: "#3b82f6",
       };
       const initialWorkspace = new Rect({
+        name: "clip",
         width: 900,
         height: 1200,
-        name: "clip",
         fill: "white",
         selectable: false,
         hasControls: false,
@@ -34,6 +58,9 @@ export function useEditor() {
       initialCanvas.add(initialWorkspace);
       initialCanvas.centerObject(initialWorkspace);
       initialCanvas.clipPath = initialWorkspace;
+
+      setCanvas(initialCanvas);
+      setContainer(initialContainer);
 
       const test = new Rect({
         width: 100,
