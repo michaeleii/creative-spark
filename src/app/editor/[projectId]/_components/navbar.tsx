@@ -23,8 +23,15 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import type { MouseEventHandler } from "react";
+import type { ActiveTool } from "../types";
+import { cn } from "@/lib/utils";
 
-export function Navbar() {
+interface NavbarProps {
+  activeTool: ActiveTool;
+  onChangeActiveTool: (tool: ActiveTool) => void;
+}
+
+export function Navbar({ activeTool, onChangeActiveTool }: NavbarProps) {
   return (
     <nav className="flex h-[68px] w-full items-center gap-x-8 border-b p-4">
       <Logo />
@@ -51,7 +58,10 @@ export function Navbar() {
         <NavbarActionButton
           icon={MousePointerClick}
           label="Select"
-          onClick={() => {}}
+          onClick={() => onChangeActiveTool("select")}
+          className={cn(
+            activeTool === "select" && "bg-gray-100 dark:bg-gray-900"
+          )}
         />
         <NavbarActionButton icon={Undo2} label="Undo" onClick={() => {}} />
 
@@ -104,16 +114,23 @@ interface NavbarActionButtonProps {
   label: string;
   icon: LucideIcon;
   onClick: MouseEventHandler<HTMLButtonElement>;
+  className?: string;
 }
 
 function NavbarActionButton({
   label,
   icon: Icon,
   onClick,
+  className,
 }: NavbarActionButtonProps) {
   return (
     <Hint label={label} side="bottom" sideOffset={10}>
-      <Button variant="ghost" size="icon" onClick={onClick}>
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={onClick}
+        className={className}
+      >
         <Icon className="size-4" />
       </Button>
     </Hint>
