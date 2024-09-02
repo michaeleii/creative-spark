@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useEditor } from "./use-editor";
+import { useEditor } from "../_hooks/use-editor";
 import { Canvas } from "fabric";
 import { Navbar } from "./navbar";
 import Sidebar from "./sidebar";
