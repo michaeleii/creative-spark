@@ -1,14 +1,34 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useEditor } from "../_hooks/use-editor";
 import { Canvas } from "fabric";
 import { Navbar } from "./navbar";
 import Sidebar from "./sidebar";
 import Toolbar from "./toolbar";
 import Footer from "./footer";
+import type { ActiveTool } from "../types";
 
 export default function Editor() {
+  const [activeTool, setActiveTool] = useState<ActiveTool>("select");
+
+  const onChangeActiveTool = useCallback(
+    (tool: ActiveTool) => {
+      if (tool === activeTool) {
+        return setActiveTool("select");
+      }
+      if (tool === "draw") {
+        // TODO: Implement draw mode
+      }
+
+      if (activeTool === "draw") {
+        // TODO: Disable draw mode
+      }
+      setActiveTool(tool);
+    },
+    [activeTool]
+  );
+
   const { init } = useEditor();
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -33,7 +53,10 @@ export default function Editor() {
     <div className="flex h-dvh flex-col">
       <Navbar />
       <div className="absolute top-[68px] flex h-[calc(100dvh-68px)] w-full">
-        <Sidebar />
+        <Sidebar
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+        />
         <main className="relative flex flex-1 flex-col overflow-auto bg-muted">
           <Toolbar />
           <div
