@@ -4,7 +4,7 @@ import { ToolSidebarHeader } from "./tool-sidebar-header";
 import ToolSidebarClose from "./tool-sidebar-close";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ShapeTool from "./shape-tool";
-import { Circle, Diamond, Square, Squircle, Triangle } from "lucide-react";
+import { Circle, Diamond, Square, Star, Triangle } from "lucide-react";
 import type { Editor } from "../_hooks/use-editor";
 
 interface ShapeSidebarProps {
@@ -46,8 +46,8 @@ export default function ShapeSidebar({
             className="fill-black"
           />
           <ShapeTool
-            onClick={() => editor?.addSquircle()}
-            icon={Squircle}
+            onClick={() => editor?.addStar()}
+            icon={Star}
             className="fill-black"
           />
           <ShapeTool

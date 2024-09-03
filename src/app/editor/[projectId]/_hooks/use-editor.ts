@@ -53,7 +53,6 @@ function buildEditor(canvas: Canvas) {
         stroke: STROKE_COLOR,
         strokeWidth: STROKE_WIDTH,
       });
-
       addToCanvas(circle);
     },
     addSquare: () => {
@@ -68,17 +67,29 @@ function buildEditor(canvas: Canvas) {
       });
       addToCanvas(square);
     },
-    addSquircle: () => {
-      const squircle = new Rect({
-        width: 400,
-        height: 400,
-        fill: FILL_COLOR,
-        stroke: STROKE_COLOR,
-        rx: 50,
-        ry: 50,
-        strokeWidth: STROKE_WIDTH,
-      });
-      addToCanvas(squircle);
+    addStar: () => {
+      const star = new Polygon(
+        [
+          { x: 0, y: -200 },
+          { x: 58, y: -80 },
+          { x: 190, y: -62 },
+          { x: 95, y: 30 },
+          { x: 117, y: 162 },
+          { x: 0, y: 100 },
+          { x: -117, y: 162 },
+          { x: -95, y: 30 },
+          { x: -190, y: -62 },
+          { x: -58, y: -80 },
+        ],
+        {
+          fill: FILL_COLOR,
+          stroke: STROKE_COLOR,
+          strokeWidth: STROKE_WIDTH,
+          width: 400,
+          height: 400,
+        }
+      );
+      addToCanvas(star);
     },
     addTriangle: () => {
       const triangle = new Triangle({
