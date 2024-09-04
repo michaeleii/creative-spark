@@ -231,7 +231,7 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
     return undefined;
   }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects]);
 
-  useAutoResize(canvas, container);
+  useAutoResize({ canvas, container });
 
   useCanvasEvents({ canvas, setSelectedObjects, clearSelectionCallback });
 

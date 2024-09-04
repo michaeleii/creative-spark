@@ -1,10 +1,12 @@
 import { Point, util, type Canvas } from "fabric";
 import { useCallback, useEffect } from "react";
 
-export const useAutoResize = (
-  canvas: Canvas | null,
-  container: HTMLDivElement | null
-) => {
+interface UseAutoResizeOptions {
+  canvas: Canvas | null;
+  container: HTMLDivElement | null;
+}
+
+export const useAutoResize = ({ canvas, container }: UseAutoResizeOptions) => {
   const autoZoom = useCallback(async () => {
     if (!canvas || !container) return;
 
