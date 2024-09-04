@@ -81,6 +81,10 @@ function buildEditor({
       // Currently gradients & patterns are not supported
       return String(selectedObject?.get("fill")) ?? fillColor;
     },
+    getActiveStrokeColor: () => {
+      const selectedObject = selectedObjects.at(0);
+      return String(selectedObject?.get("stroke")) ?? strokeColor;
+    },
     changeFillColor: (value: string) => {
       setFillColor(value);
       canvas.getActiveObjects().forEach((obj) => {
@@ -100,8 +104,7 @@ function buildEditor({
       canvas.getActiveObjects().forEach((obj) => {
         // Text types don't have stroke
         if (isTextType(obj.type)) {
-          obj.set({ fill: value });
-          return;
+          return obj.set({ fill: value });
         }
         obj.set({ stroke: value });
       });

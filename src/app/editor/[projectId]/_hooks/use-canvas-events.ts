@@ -15,24 +15,21 @@ export function useCanvasEvents({
   clearSelectionCallback,
 }: UseCanvasEventsOptions) {
   useEffect(() => {
-    if (canvas) {
-      canvas.on("selection:created", (e) => {
+    const clearEvents = canvas?.on({
+      "selection:created": (e) => {
         setSelectedObjects(e.selected);
-      });
-      canvas.on("selection:updated", (e) => {
+      },
+      "selection:updated": (e) => {
         setSelectedObjects(e.selected);
-      });
-      canvas.on("selection:cleared", () => {
+      },
+      "selection:cleared": () => {
         setSelectedObjects([]);
         clearSelectionCallback?.();
-      });
-    }
+      },
+    });
+
     return () => {
-      if (canvas) {
-        canvas.off("selection:created");
-        canvas.off("selection:updated");
-        canvas.off("selection:cleared");
-      }
+      clearEvents?.();
     };
   }, [canvas, clearSelectionCallback, setSelectedObjects]);
 }
