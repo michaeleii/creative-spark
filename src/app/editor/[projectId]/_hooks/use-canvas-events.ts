@@ -1,10 +1,19 @@
+"use client";
+
 import type { Canvas, FabricObject } from "fabric";
 import { useEffect, type Dispatch, type SetStateAction } from "react";
 
-export function useCanvasEvents(
-  canvas: Canvas | null,
-  setSelectedObjects: Dispatch<SetStateAction<FabricObject[]>>
-) {
+interface UseCanvasEventsOptions {
+  canvas: Canvas | null;
+  setSelectedObjects: Dispatch<SetStateAction<FabricObject[]>>;
+  clearSelectionCallback?: () => void;
+}
+
+export function useCanvasEvents({
+  canvas,
+  setSelectedObjects,
+  clearSelectionCallback,
+}: UseCanvasEventsOptions) {
   useEffect(() => {
     if (canvas) {
       canvas.on("selection:created", (e) => {
@@ -15,12 +24,15 @@ export function useCanvasEvents(
       });
       canvas.on("selection:cleared", () => {
         setSelectedObjects([]);
+        clearSelectionCallback?.();
       });
     }
     return () => {
       if (canvas) {
-        canvas.removeListeners();
+        canvas.off("selection:created");
+        canvas.off("selection:updated");
+        canvas.off("selection:cleared");
       }
     };
-  }, [canvas, setSelectedObjects]);
+  }, [canvas, clearSelectionCallback, setSelectedObjects]);
 }

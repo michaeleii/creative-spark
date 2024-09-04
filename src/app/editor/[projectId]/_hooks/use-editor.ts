@@ -78,7 +78,8 @@ function buildEditor({
     strokeWidth,
     getActiveFillColor: () => {
       const selectedObject = selectedObjects.at(0);
-      return (selectedObject?.get("fill") as string) ?? fillColor;
+      // Currently gradients & patterns are not supported
+      return String(selectedObject?.get("fill")) ?? fillColor;
     },
     changeFillColor: (value: string) => {
       setFillColor(value);
@@ -215,25 +216,29 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
   const [strokeColor, setStrokeColor] = useState(STROKE_COLOR);
   const [strokeWidth, setStrokeWidth] = useState(STROKE_WIDTH);
 
-  const editor = useMemo(() => {
-    if (canvas) {
-      return buildEditor({
-        canvas,
-        fillColor,
-        strokeColor,
-        strokeWidth,
-        setFillColor,
-        setStrokeColor,
-        setStrokeWidth,
-        selectedObjects,
-      });
-    }
-    return undefined;
-  }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects]);
-
   useAutoResize({ canvas, container });
 
-  useCanvasEvents({ canvas, setSelectedObjects, clearSelectionCallback });
+  useCanvasEvents({
+    canvas,
+    setSelectedObjects,
+    clearSelectionCallback,
+  });
+
+  const editor = useMemo(() => {
+    if (!canvas) {
+      return undefined;
+    }
+    return buildEditor({
+      canvas,
+      fillColor,
+      strokeColor,
+      strokeWidth,
+      setFillColor,
+      setStrokeColor,
+      setStrokeWidth,
+      selectedObjects,
+    });
+  }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects]);
 
   const init = useCallback(
     (initialCanvas: Canvas, initialContainer: HTMLDivElement) => {
