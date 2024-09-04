@@ -18,14 +18,7 @@ export default function FillColorSidebar({
   onChangeActiveTool,
   editor,
 }: FillColorSidebarProps) {
-  const value = editor?.fillColor || FILL_COLOR;
-  const onClose = () => {
-    onChangeActiveTool("select");
-  };
-
-  const onChange = (value: string) => {
-    editor?.changeFillColor(value);
-  };
+  const fillColor = editor?.getActiveFillColor() || FILL_COLOR;
 
   return (
     <aside
@@ -40,10 +33,19 @@ export default function FillColorSidebar({
       />
       <ScrollArea>
         <div className="space-y-6 p-4">
-          <ColorPicker value={value} onChange={onChange} />
+          <ColorPicker
+            value={fillColor}
+            onChange={(value) => {
+              editor?.changeFillColor(value);
+            }}
+          />
         </div>
       </ScrollArea>
-      <ToolSidebarClose onClick={onClose} />
+      <ToolSidebarClose
+        onClick={() => {
+          onChangeActiveTool("select");
+        }}
+      />
     </aside>
   );
 }

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { Editor } from "../_hooks/use-editor";
 import type { ActiveTool } from "../types";
+import { FILL_COLOR } from "../constants";
 
 interface ToolbarProps {
   editor?: Editor;
@@ -15,10 +16,10 @@ export default function Toolbar({
   activeTool,
   onChangeActiveTool,
 }: ToolbarProps) {
-  const fillColor = editor?.fillColor ?? "black";
-
   if (editor?.selectedObjects.length === 0) {
-    <div className="z-[49] flex h-[56px] w-full shrink-0 items-center gap-x-2 overflow-x-auto border-b bg-background p-2" />;
+    return (
+      <div className="z-[49] flex h-[56px] w-full shrink-0 items-center gap-x-2 overflow-x-auto border-b bg-background p-2" />
+    );
   }
 
   return (
@@ -35,7 +36,7 @@ export default function Toolbar({
           <div
             className="size-4 rounded-sm border"
             style={{
-              backgroundColor: fillColor,
+              backgroundColor: editor?.getActiveFillColor() ?? FILL_COLOR,
             }}
           ></div>
         </Button>

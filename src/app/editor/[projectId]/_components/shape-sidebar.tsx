@@ -18,10 +18,6 @@ export default function ShapeSidebar({
   onChangeActiveTool,
   editor,
 }: ShapeSidebarProps) {
-  const onClose = () => {
-    onChangeActiveTool("select");
-  };
-
   return (
     <aside
       className={cn(
@@ -38,36 +34,40 @@ export default function ShapeSidebar({
           <ShapeTool
             onClick={() => editor?.addCircle()}
             icon={Circle}
-            className="fill-black"
+            className="stroke-1"
           />
           <ShapeTool
             onClick={() => editor?.addSquare()}
             icon={Square}
-            className="fill-black"
+            className="stroke-1"
           />
           <ShapeTool
             onClick={() => editor?.addStar()}
             icon={Star}
-            className="fill-black"
+            className="stroke-1"
           />
           <ShapeTool
             onClick={() => editor?.addTriangle()}
             icon={Triangle}
-            className="fill-black"
+            className="stroke-1"
           />
           <ShapeTool
             onClick={() => editor?.addInverseTriangle()}
             icon={Triangle}
-            className="rotate-180 fill-black"
+            className="rotate-180 stroke-1"
           />
           <ShapeTool
             onClick={() => editor?.addDiamond()}
             icon={Diamond}
-            className="fill-black"
+            className="stroke-1"
           />
         </div>
       </ScrollArea>
-      <ToolSidebarClose onClick={onClose} />
+      <ToolSidebarClose
+        onClick={() => {
+          onChangeActiveTool("select");
+        }}
+      />
     </aside>
   );
 }
