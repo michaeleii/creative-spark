@@ -1,3 +1,5 @@
+"use client";
+
 import {
   useCallback,
   useState,
@@ -72,9 +74,12 @@ function buildEditor({
 
   return {
     canvas,
-    fillColor,
     strokeColor,
     strokeWidth,
+    getActiveFillColor: () => {
+      const selectedObject = selectedObjects.at(0);
+      return (selectedObject?.get("fill") as string) ?? fillColor;
+    },
     changeFillColor: (value: string) => {
       setFillColor(value);
       canvas.getActiveObjects().forEach((obj) => {
@@ -197,7 +202,11 @@ function buildEditor({
 
 export type Editor = ReturnType<typeof buildEditor>;
 
-export function useEditor() {
+interface UseEditorOptions {
+  clearSelectionCallback?: () => void;
+}
+
+export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
   const [canvas, setCanvas] = useState<Canvas | null>(null);
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const [selectedObjects, setSelectedObjects] = useState<FabricObject[]>([]);
@@ -224,7 +233,7 @@ export function useEditor() {
 
   useAutoResize(canvas, container);
 
-  useCanvasEvents(canvas, setSelectedObjects);
+  useCanvasEvents({ canvas, setSelectedObjects, clearSelectionCallback });
 
   const init = useCallback(
     (initialCanvas: Canvas, initialContainer: HTMLDivElement) => {
