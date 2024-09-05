@@ -20,7 +20,12 @@ import {
 import { useAutoResize } from "./use-auto-resize";
 import { useCanvasEvents } from "./use-canvas-events";
 import { isTextType } from "../utils";
-import { FILL_COLOR, STROKE_COLOR, STROKE_WIDTH } from "../constants";
+import {
+  FILL_COLOR,
+  STROKE_COLOR,
+  STROKE_DASH_ARRAY,
+  STROKE_WIDTH,
+} from "../constants";
 
 interface CustomFabricObjectProps {
   id?: string;
@@ -39,9 +44,11 @@ interface BuildEditorProps {
   fillColor: string;
   strokeColor: string;
   strokeWidth: number;
+  strokeDashArray: number[];
   setFillColor: Dispatch<SetStateAction<string>>;
   setStrokeColor: Dispatch<SetStateAction<string>>;
   setStrokeWidth: Dispatch<SetStateAction<number>>;
+  setStrokeDashArray: Dispatch<SetStateAction<number[]>>;
   selectedObjects: FabricObject[];
 }
 
@@ -50,9 +57,11 @@ function buildEditor({
   fillColor,
   strokeColor,
   strokeWidth,
+  strokeDashArray,
   setFillColor,
   setStrokeColor,
   setStrokeWidth,
+  setStrokeDashArray,
   selectedObjects,
 }: BuildEditorProps) {
   const getWorkspace = () =>
@@ -74,8 +83,6 @@ function buildEditor({
 
   return {
     canvas,
-    strokeColor,
-    strokeWidth,
     getActiveFillColor: () => {
       const selectedObject = selectedObjects.at(0);
       // Currently gradients & patterns are not supported
@@ -84,6 +91,16 @@ function buildEditor({
     getActiveStrokeColor: () => {
       const selectedObject = selectedObjects.at(0);
       return String(selectedObject?.get("stroke")) ?? strokeColor;
+    },
+    getActiveStrokeWidth: () => {
+      const selectedObject = selectedObjects.at(0);
+      return Number(selectedObject?.get("strokeWidth")) ?? strokeWidth;
+    },
+    getActiveStrokeDashArray: () => {
+      const selectedObject = selectedObjects.at(0);
+      return (
+        (selectedObject?.get("strokeDashArray") as number[]) ?? strokeDashArray
+      );
     },
     changeFillColor: (value: string) => {
       setFillColor(value);
@@ -110,12 +127,20 @@ function buildEditor({
       });
       canvas.renderAll();
     },
+    changeStrokeDashArray: (value: number[]) => {
+      setStrokeDashArray(value);
+      canvas.getActiveObjects().forEach((obj) => {
+        obj.set({ strokeDashArray: value });
+      });
+      canvas.renderAll();
+    },
     addCircle: () => {
       const circle = new Circle({
         radius: 225,
         fill: fillColor,
         stroke: strokeColor,
         strokeWidth: strokeWidth,
+        strokeDashArray: strokeDashArray,
       });
       addToCanvas(circle);
     },
@@ -128,6 +153,7 @@ function buildEditor({
         fill: fillColor,
         stroke: strokeColor,
         strokeWidth: strokeWidth,
+        strokeDashArray: strokeDashArray,
       });
       addToCanvas(square);
     },
@@ -151,6 +177,7 @@ function buildEditor({
           strokeWidth: strokeWidth,
           width: 400,
           height: 400,
+          strokeDashArray: strokeDashArray,
         }
       );
       addToCanvas(star);
@@ -162,6 +189,7 @@ function buildEditor({
         fill: fillColor,
         stroke: strokeColor,
         strokeWidth: strokeWidth,
+        strokeDashArray: strokeDashArray,
       });
       addToCanvas(triangle);
     },
@@ -178,6 +206,7 @@ function buildEditor({
           strokeWidth: strokeWidth,
           width: 400,
           height: 400,
+          strokeDashArray: strokeDashArray,
         }
       );
       addToCanvas(triangleInverse);
@@ -196,6 +225,7 @@ function buildEditor({
           strokeWidth: strokeWidth,
           width: 600,
           height: 600,
+          strokeDashArray: strokeDashArray,
         }
       );
       addToCanvas(diamond);
@@ -218,6 +248,7 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
   const [fillColor, setFillColor] = useState(FILL_COLOR);
   const [strokeColor, setStrokeColor] = useState(STROKE_COLOR);
   const [strokeWidth, setStrokeWidth] = useState(STROKE_WIDTH);
+  const [strokeDashArray, setStrokeDashArray] = useState(STROKE_DASH_ARRAY);
 
   useAutoResize({ canvas, container });
 
@@ -236,12 +267,21 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
       fillColor,
       strokeColor,
       strokeWidth,
+      strokeDashArray,
       setFillColor,
       setStrokeColor,
       setStrokeWidth,
+      setStrokeDashArray,
       selectedObjects,
     });
-  }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects]);
+  }, [
+    canvas,
+    fillColor,
+    strokeColor,
+    strokeWidth,
+    strokeDashArray,
+    selectedObjects,
+  ]);
 
   const init = useCallback(
     (initialCanvas: Canvas, initialContainer: HTMLDivElement) => {

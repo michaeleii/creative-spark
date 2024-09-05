@@ -4,7 +4,9 @@ import { ToolSidebarHeader } from "./tool-sidebar-header";
 import ToolSidebarClose from "./tool-sidebar-close";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ShapeTool from "./shape-tool";
-import { Circle, Diamond, Square, Star, Triangle } from "lucide-react";
+import { FaCircle, FaSquare, FaStar } from "react-icons/fa";
+import { IoTriangle } from "react-icons/io5";
+import { FaDiamond } from "react-icons/fa6";
 import type { Editor } from "../_hooks/use-editor";
 
 interface ShapeSidebarProps {
@@ -31,36 +33,16 @@ export default function ShapeSidebar({
       />
       <ScrollArea>
         <div className="grid grid-cols-3 gap-4 p-4">
-          <ShapeTool
-            onClick={() => editor?.addCircle()}
-            icon={Circle}
-            className="stroke-1"
-          />
-          <ShapeTool
-            onClick={() => editor?.addSquare()}
-            icon={Square}
-            className="stroke-1"
-          />
-          <ShapeTool
-            onClick={() => editor?.addStar()}
-            icon={Star}
-            className="stroke-1"
-          />
-          <ShapeTool
-            onClick={() => editor?.addTriangle()}
-            icon={Triangle}
-            className="stroke-1"
-          />
+          <ShapeTool onClick={() => editor?.addCircle()} icon={FaCircle} />
+          <ShapeTool onClick={() => editor?.addSquare()} icon={FaSquare} />
+          <ShapeTool onClick={() => editor?.addStar()} icon={FaStar} />
+          <ShapeTool onClick={() => editor?.addTriangle()} icon={IoTriangle} />
           <ShapeTool
             onClick={() => editor?.addInverseTriangle()}
-            icon={Triangle}
-            className="rotate-180 stroke-1"
+            icon={IoTriangle}
+            className="rotate-180"
           />
-          <ShapeTool
-            onClick={() => editor?.addDiamond()}
-            icon={Diamond}
-            className="stroke-1"
-          />
+          <ShapeTool onClick={() => editor?.addDiamond()} icon={FaDiamond} />
         </div>
       </ScrollArea>
       <ToolSidebarClose
