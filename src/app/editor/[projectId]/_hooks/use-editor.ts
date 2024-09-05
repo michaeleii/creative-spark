@@ -83,6 +83,28 @@ function buildEditor({
 
   return {
     canvas,
+    bringForward: () => {
+      canvas.getActiveObjects().forEach((object) => {
+        canvas.bringObjectForward(object);
+      });
+      canvas.renderAll();
+      const workspace = getWorkspace();
+      if (!workspace) {
+        return;
+      }
+      canvas.sendObjectToBack(workspace);
+    },
+    sendBackwards: () => {
+      canvas.getActiveObjects().forEach((object) => {
+        canvas.sendObjectBackwards(object);
+      });
+      canvas.renderAll();
+      const workspace = getWorkspace();
+      if (!workspace) {
+        return;
+      }
+      canvas.sendObjectToBack(workspace);
+    },
     getActiveFillColor: () => {
       const selectedObject = selectedObjects.at(0);
       // Currently gradients & patterns are not supported

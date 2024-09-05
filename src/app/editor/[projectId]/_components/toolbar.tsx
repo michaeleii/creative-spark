@@ -5,6 +5,7 @@ import type { Editor } from "../_hooks/use-editor";
 import type { ActiveTool } from "../types";
 import { FILL_COLOR, STROKE_COLOR } from "../constants";
 import { BsBorderWidth } from "react-icons/bs";
+import { ArrowDown, ArrowUp } from "lucide-react";
 
 interface ToolbarProps {
   editor?: Editor;
@@ -77,6 +78,28 @@ export default function Toolbar({
             )}
           >
             <BsBorderWidth className="size-4" />
+          </Button>
+        </Hint>
+      </div>
+      <div className="flex h-full items-center justify-center">
+        <Hint label="Bring Forward" side="bottom" sideOffset={5}>
+          <Button
+            onClick={() => editor?.bringForward()}
+            size="icon"
+            variant="ghost"
+          >
+            <ArrowUp className="size-4" />
+          </Button>
+        </Hint>
+      </div>
+      <div className="flex h-full items-center justify-center">
+        <Hint label="Send Backwards" side="bottom" sideOffset={5}>
+          <Button
+            onClick={() => editor?.sendBackwards()}
+            size="icon"
+            variant="ghost"
+          >
+            <ArrowDown className="size-4" />
           </Button>
         </Hint>
       </div>
