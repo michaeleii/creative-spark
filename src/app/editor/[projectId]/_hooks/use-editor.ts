@@ -118,11 +118,12 @@ function buildEditor({
     getActiveFillColor: () => {
       const selectedObject = selectedObjects.at(0);
       // Currently gradients & patterns are not supported
-      return selectedObject?.fill ?? fillColor;
+      return selectedObject?.fill?.toString() ?? fillColor;
     },
     getActiveStrokeColor: () => {
       const selectedObject = selectedObjects.at(0);
-      return selectedObject?.stroke ?? strokeColor;
+      // Currently gradients & patterns are not supported
+      return selectedObject?.stroke?.toString() ?? strokeColor;
     },
     getActiveStrokeWidth: () => {
       const selectedObject = selectedObjects.at(0);
