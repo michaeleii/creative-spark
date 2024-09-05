@@ -113,7 +113,7 @@ function buildEditor({
     },
     getActiveOpacity: () => {
       const selectedObject = selectedObjects.at(0);
-      return selectedObject?.opacity ?? 1;
+      return selectedObject?.opacity;
     },
     getActiveFillColor: () => {
       const selectedObject = selectedObjects.at(0);
