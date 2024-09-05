@@ -113,26 +113,24 @@ function buildEditor({
     },
     getActiveOpacity: () => {
       const selectedObject = selectedObjects.at(0);
-      return Number(selectedObject?.get("opacity")) ?? 1;
+      return selectedObject?.opacity ?? 1;
     },
     getActiveFillColor: () => {
       const selectedObject = selectedObjects.at(0);
       // Currently gradients & patterns are not supported
-      return String(selectedObject?.get("fill")) ?? fillColor;
+      return selectedObject?.fill ?? fillColor;
     },
     getActiveStrokeColor: () => {
       const selectedObject = selectedObjects.at(0);
-      return String(selectedObject?.get("stroke")) ?? strokeColor;
+      return selectedObject?.stroke ?? strokeColor;
     },
     getActiveStrokeWidth: () => {
       const selectedObject = selectedObjects.at(0);
-      return Number(selectedObject?.get("strokeWidth")) ?? strokeWidth;
+      return selectedObject?.strokeWidth ?? strokeWidth;
     },
     getActiveStrokeDashArray: () => {
       const selectedObject = selectedObjects.at(0);
-      return (
-        (selectedObject?.get("strokeDashArray") as number[]) ?? strokeDashArray
-      );
+      return selectedObject?.strokeDashArray ?? strokeDashArray;
     },
     changeFillColor: (value: string) => {
       setFillColor(value);
