@@ -5,6 +5,7 @@ import type { Editor } from "../_hooks/use-editor";
 import type { ActiveTool } from "../types";
 import { FILL_COLOR, STROKE_COLOR } from "../constants";
 import { BsBorderWidth } from "react-icons/bs";
+import { RxTransparencyGrid } from "react-icons/rx";
 import { ArrowDown, ArrowUp } from "lucide-react";
 
 interface ToolbarProps {
@@ -100,6 +101,20 @@ export default function Toolbar({
             variant="ghost"
           >
             <ArrowDown className="size-4" />
+          </Button>
+        </Hint>
+      </div>
+      <div className="flex h-full items-center justify-center">
+        <Hint label="Opacity" side="bottom" sideOffset={5}>
+          <Button
+            onClick={() => onChangeActiveTool("opacity")}
+            size="icon"
+            variant="ghost"
+            className={cn(
+              activeTool === "opacity" && "bg-gray-100 dark:bg-gray-900"
+            )}
+          >
+            <RxTransparencyGrid className="size-4" />
           </Button>
         </Hint>
       </div>

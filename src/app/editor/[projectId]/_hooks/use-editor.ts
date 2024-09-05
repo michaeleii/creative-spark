@@ -83,6 +83,12 @@ function buildEditor({
 
   return {
     canvas,
+    changeOpacity: (value: number) => {
+      canvas.getActiveObjects().forEach((object) => {
+        object.set({ opacity: value });
+      });
+      canvas.renderAll();
+    },
     bringForward: () => {
       canvas.getActiveObjects().forEach((object) => {
         canvas.bringObjectForward(object);
@@ -104,6 +110,10 @@ function buildEditor({
         return;
       }
       canvas.sendObjectToBack(workspace);
+    },
+    getActiveOpacity: () => {
+      const selectedObject = selectedObjects.at(0);
+      return Number(selectedObject?.get("opacity")) ?? 1;
     },
     getActiveFillColor: () => {
       const selectedObject = selectedObjects.at(0);
