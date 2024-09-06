@@ -14,14 +14,19 @@ import {
   Polygon,
   Rect,
   Shadow,
+  Textbox,
   Triangle,
   type Canvas,
+  type TextboxProps,
+  type TOptions,
 } from "fabric";
 import { useAutoResize } from "./use-auto-resize";
 import { useCanvasEvents } from "./use-canvas-events";
 import { isTextType } from "../utils";
 import {
   FILL_COLOR,
+  FONT_FAMILY,
+  FONT_SIZE,
   STROKE_COLOR,
   STROKE_DASH_ARRAY,
   STROKE_WIDTH,
@@ -82,7 +87,17 @@ function buildEditor({
   };
 
   return {
-    canvas,
+    addText: (text: string, options?: TOptions<TextboxProps>) => {
+      const textbox = new Textbox(text, {
+        left: 100,
+        top: 100,
+        fill: fillColor,
+        fontSize: FONT_SIZE,
+        fontFamily: FONT_FAMILY,
+        ...options,
+      });
+      addToCanvas(textbox);
+    },
     changeOpacity: (value: number) => {
       canvas.getActiveObjects().forEach((object) => {
         object.set({ opacity: value });
@@ -261,6 +276,7 @@ function buildEditor({
       );
       addToCanvas(diamond);
     },
+    canvas,
     selectedObjects,
   };
 }
