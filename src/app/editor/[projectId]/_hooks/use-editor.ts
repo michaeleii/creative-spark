@@ -54,6 +54,10 @@ interface BuildEditorProps {
   setStrokeColor: Dispatch<SetStateAction<string>>;
   setStrokeWidth: Dispatch<SetStateAction<number>>;
   setStrokeDashArray: Dispatch<SetStateAction<number[]>>;
+  fontFamily: string;
+  fontSize: number;
+  setFontFamily: Dispatch<SetStateAction<string>>;
+  setFontSize: Dispatch<SetStateAction<number>>;
   selectedObjects: FabricObject[];
 }
 
@@ -67,6 +71,10 @@ function buildEditor({
   setStrokeColor,
   setStrokeWidth,
   setStrokeDashArray,
+  fontFamily,
+  fontSize,
+  setFontFamily,
+  setFontSize,
   selectedObjects,
 }: BuildEditorProps) {
   const getWorkspace = () =>
@@ -87,6 +95,34 @@ function buildEditor({
   };
 
   return {
+    getActiveFontFamily: () => {
+      const selectedObject = selectedObjects.at(0);
+      //@ts-expect-error: fontFamily is a valid property for FabricObject
+      return selectedObject?.fontFamily ?? fontFamily;
+    },
+    getActiveFontSize: () => {
+      const selectedObject = selectedObjects.at(0);
+      //@ts-expect-error: fontSize is a valid property for FabricObject
+      return selectedObject?.fontSize ?? fontSize;
+    },
+    changeFontFamily: (value: string) => {
+      setFontFamily(value);
+      canvas.getActiveObjects().forEach((obj) => {
+        if (isTextType(obj.type)) {
+          obj.set({ fontFamily: value });
+        }
+      });
+      canvas.renderAll();
+    },
+    changeFontSize: (value: number) => {
+      setFontSize(value);
+      canvas.getActiveObjects().forEach((obj) => {
+        if (isTextType(obj.type)) {
+          obj.set({ fontSize: value });
+        }
+      });
+      canvas.renderAll();
+    },
     addText: (text: string, options?: TOptions<TextboxProps>) => {
       const textbox = new Textbox(text, {
         left: 100,
@@ -297,6 +333,9 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
   const [strokeWidth, setStrokeWidth] = useState(STROKE_WIDTH);
   const [strokeDashArray, setStrokeDashArray] = useState(STROKE_DASH_ARRAY);
 
+  const [fontFamily, setFontFamily] = useState(FONT_FAMILY);
+  const [fontSize, setFontSize] = useState(FONT_SIZE);
+
   useAutoResize({ canvas, container });
 
   useCanvasEvents({
@@ -310,7 +349,6 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
       return undefined;
     }
     return buildEditor({
-      canvas,
       fillColor,
       strokeColor,
       strokeWidth,
@@ -319,6 +357,11 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
       setStrokeColor,
       setStrokeWidth,
       setStrokeDashArray,
+      fontFamily,
+      fontSize,
+      setFontFamily,
+      setFontSize,
+      canvas,
       selectedObjects,
     });
   }, [
@@ -327,6 +370,8 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
     strokeColor,
     strokeWidth,
     strokeDashArray,
+    fontFamily,
+    fontSize,
     selectedObjects,
   ]);
 

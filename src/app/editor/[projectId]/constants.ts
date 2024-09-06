@@ -40,3 +40,23 @@ export const SELECTION_DEPENDENT_TOOLS: ActiveTool[] = [
   "stroke-color",
   "stroke-width",
 ] as const;
+
+export const FONTS = [
+  "Arial",
+  "Arial Black",
+  "Verdana",
+  "Tahoma",
+  "Trebuchet MS",
+  "Times New Roman",
+  "Georgia",
+  "Garamond",
+  "Courier New",
+  "Brush Script MT",
+  "Palatino",
+  "Bookman",
+  "Comic Sans MS",
+  "Impact",
+  "Lucida Sans Unicode",
+  "Geneva",
+  "Lucida Console",
+];

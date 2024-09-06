@@ -30,8 +30,6 @@ export default function TextSidebar({
           <Button className="w-full" onClick={() => editor?.addText("Textbox")}>
             Add a textbox
           </Button>
-        </div>
-        <div className="space-y-4 border-b p-4">
           <Button
             className="h-16 w-full"
             variant="secondary"

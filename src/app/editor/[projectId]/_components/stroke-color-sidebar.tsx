@@ -5,7 +5,6 @@ import ToolSidebarClose from "./tool-sidebar-close";
 import { cn } from "@/lib/utils";
 import type { ActiveTool } from "../types";
 import type { Editor } from "../_hooks/use-editor";
-import { STROKE_COLOR } from "../constants";
 
 interface StrokeColorSidebarProps {
   activeTool: ActiveTool;
@@ -18,7 +17,10 @@ export default function StrokeColorSidebar({
   onChangeActiveTool,
   editor,
 }: StrokeColorSidebarProps) {
-  const strokeColor = editor?.getActiveStrokeColor() ?? STROKE_COLOR;
+  if (!editor) {
+    return null;
+  }
+  const strokeColor = editor.getActiveStrokeColor();
 
   return (
     <aside

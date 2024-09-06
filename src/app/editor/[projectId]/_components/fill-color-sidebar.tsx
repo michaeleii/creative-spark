@@ -5,7 +5,6 @@ import ToolSidebarClose from "./tool-sidebar-close";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import type { Editor } from "../_hooks/use-editor";
 import ColorPicker from "./color-picker";
-import { FILL_COLOR } from "../constants";
 
 interface FillColorSidebarProps {
   activeTool: ActiveTool;
@@ -18,7 +17,10 @@ export default function FillColorSidebar({
   onChangeActiveTool,
   editor,
 }: FillColorSidebarProps) {
-  const fillColor = editor?.getActiveFillColor() ?? FILL_COLOR;
+  if (!editor) {
+    return null;
+  }
+  const fillColor = editor.getActiveFillColor();
 
   return (
     <aside

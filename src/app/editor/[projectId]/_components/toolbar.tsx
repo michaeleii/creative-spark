@@ -3,10 +3,9 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { Editor } from "../_hooks/use-editor";
 import type { ActiveTool } from "../types";
-import { FILL_COLOR, STROKE_COLOR } from "../constants";
 import { BsBorderWidth } from "react-icons/bs";
 import { RxTransparencyGrid } from "react-icons/rx";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronDown } from "lucide-react";
 import { isTextType } from "../utils";
 
 interface ToolbarProps {
@@ -20,13 +19,17 @@ export default function Toolbar({
   activeTool,
   onChangeActiveTool,
 }: ToolbarProps) {
-  const fillColor = editor?.getActiveFillColor() ?? FILL_COLOR;
-  const strokeColor = editor?.getActiveStrokeColor() ?? STROKE_COLOR;
+  if (!editor) {
+    return null;
+  }
+  const fillColor = editor.getActiveFillColor();
+  const strokeColor = editor.getActiveStrokeColor();
+  const fontFamily = editor.getActiveFontFamily();
 
-  const selectedObject = editor?.selectedObjects.at(0);
+  const selectedObject = editor.selectedObjects.at(0);
   const isText = isTextType(selectedObject?.type);
 
-  if (editor?.selectedObjects.length === 0) {
+  if (editor.selectedObjects.length === 0) {
     return (
       <div className="z-[49] flex h-[56px] w-full shrink-0 items-center gap-x-2 overflow-x-auto border-b bg-background p-2" />
     );
@@ -92,7 +95,24 @@ export default function Toolbar({
           </div>
         </>
       )}
-
+      {isText && (
+        <div className="flex h-full items-center justify-center">
+          <Hint label="Font" side="bottom" sideOffset={5}>
+            <Button
+              onClick={() => onChangeActiveTool("font")}
+              size="icon"
+              variant="ghost"
+              className={cn(
+                "w-auto px-2 text-sm",
+                activeTool === "font" && "bg-gray-100 dark:bg-gray-900"
+              )}
+            >
+              <div className="max-w-[300px] truncate">{fontFamily}</div>
+              <ChevronDown className="ml-2 size-4 shrink-0" />
+            </Button>
+          </Hint>
+        </div>
+      )}
       <div className="flex h-full items-center justify-center">
         <Hint label="Bring Forward" side="bottom" sideOffset={5}>
           <Button
