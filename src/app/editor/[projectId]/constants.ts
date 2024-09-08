@@ -7,6 +7,8 @@ export const STROKE_WIDTH = 2;
 export const STROKE_DASH_ARRAY: number[] = [];
 export const FONT_SIZE = 32;
 export const FONT_FAMILY = "Arial";
+export const FONT_WEIGHT_NORMAL = 400;
+export const FONT_WEIGHT_BOLD = 700;
 
 export const COLORS = [
   material.red[500],

@@ -27,10 +27,12 @@ import {
   FILL_COLOR,
   FONT_FAMILY,
   FONT_SIZE,
+  FONT_WEIGHT_NORMAL,
   STROKE_COLOR,
   STROKE_DASH_ARRAY,
   STROKE_WIDTH,
 } from "../constants";
+import type { FontStyle, FontWeight, TextAlign } from "../types";
 
 interface CustomFabricObjectProps {
   id?: string;
@@ -95,15 +97,80 @@ function buildEditor({
   };
 
   return {
+    changeTextAlign: (value: TextAlign) => {
+      canvas.getActiveObjects().forEach((object) => {
+        if (isTextType(object.type)) {
+          object.set({ textAlign: value });
+        }
+      });
+      canvas.renderAll();
+    },
+    getActiveTextAlign: (): TextAlign => {
+      const selectedObject = selectedObjects.at(0);
+      //@ts-expect-error: textAlign is a valid property for FabricObject
+      return (selectedObject?.textAlign as TextAlign) ?? "left";
+    },
+    changeTextUnderline: (value: boolean) => {
+      canvas.getActiveObjects().forEach((object) => {
+        if (isTextType(object.type)) {
+          object.set({ underline: value });
+        }
+      });
+      canvas.renderAll();
+    },
+    getActiveTextUnderline: (): boolean => {
+      const selectedObject = selectedObjects.at(0);
+      //@ts-expect-error: underline is a valid property for FabricObject
+      return selectedObject?.underline ?? false;
+    },
+    changeTextLinethrough: (value: boolean) => {
+      canvas.getActiveObjects().forEach((object) => {
+        if (isTextType(object.type)) {
+          object.set({ linethrough: value });
+        }
+      });
+      canvas.renderAll();
+    },
+    getActiveTextLinethrough: (): boolean => {
+      const selectedObject = selectedObjects.at(0);
+      //@ts-expect-error: linethrough is a valid property for FabricObject
+      return selectedObject?.linethrough ?? false;
+    },
+    getActiveFontStyle: (): FontStyle => {
+      const selectedObject = selectedObjects.at(0);
+      //@ts-expect-error: fontStyle is a valid property for FabricObject
+      return (selectedObject?.fontStyle as FontStyle) ?? "normal";
+    },
+    getActiveFontWeight: (): FontWeight => {
+      const selectedObject = selectedObjects.at(0);
+      //@ts-expect-error: fontWeight is a valid property for FabricObject
+      return (selectedObject?.fontWeight as FontWeight) ?? FONT_WEIGHT_NORMAL;
+    },
     getActiveFontFamily: () => {
       const selectedObject = selectedObjects.at(0);
       //@ts-expect-error: fontFamily is a valid property for FabricObject
-      return selectedObject?.fontFamily ?? fontFamily;
+      return (selectedObject?.fontFamily as string) ?? fontFamily;
     },
     getActiveFontSize: () => {
       const selectedObject = selectedObjects.at(0);
       //@ts-expect-error: fontSize is a valid property for FabricObject
       return selectedObject?.fontSize ?? fontSize;
+    },
+    changeFontStyle: (value: FontStyle) => {
+      canvas.getActiveObjects().forEach((object) => {
+        if (isTextType(object.type)) {
+          object.set({ fontStyle: value });
+        }
+      });
+      canvas.renderAll();
+    },
+    changeFontWeight: (value: number) => {
+      canvas.getActiveObjects().forEach((object) => {
+        if (isTextType(object.type)) {
+          object.set({ fontWeight: value });
+        }
+      });
+      canvas.renderAll();
     },
     changeFontFamily: (value: string) => {
       setFontFamily(value);
@@ -134,6 +201,7 @@ function buildEditor({
       });
       addToCanvas(textbox);
     },
+
     changeOpacity: (value: number) => {
       canvas.getActiveObjects().forEach((object) => {
         object.set({ opacity: value });

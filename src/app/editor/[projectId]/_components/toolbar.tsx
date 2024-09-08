@@ -5,8 +5,21 @@ import type { Editor } from "../_hooks/use-editor";
 import type { ActiveTool } from "../types";
 import { BsBorderWidth } from "react-icons/bs";
 import { RxTransparencyGrid } from "react-icons/rx";
-import { ArrowDown, ArrowUp, ChevronDown } from "lucide-react";
+import {
+  AlignCenter,
+  AlignLeft,
+  AlignRight,
+  ArrowDown,
+  ArrowUp,
+  Bold,
+  ChevronDown,
+  Italic,
+  Strikethrough,
+  Underline,
+} from "lucide-react";
 import { isTextType } from "../utils";
+import { useState } from "react";
+import { FONT_WEIGHT_BOLD, FONT_WEIGHT_NORMAL } from "../constants";
 
 interface ToolbarProps {
   editor?: Editor;
@@ -19,15 +32,62 @@ export default function Toolbar({
   activeTool,
   onChangeActiveTool,
 }: ToolbarProps) {
+  const [toolbarRefresh, setToolbarRefresh] = useState(false);
+
+  const refreshToolbar = () => {
+    setToolbarRefresh(!toolbarRefresh);
+  };
+
   if (!editor) {
     return null;
   }
   const fillColor = editor.getActiveFillColor();
   const strokeColor = editor.getActiveStrokeColor();
   const fontFamily = editor.getActiveFontFamily();
+  const fontWeight = editor.getActiveFontWeight();
+  const fontStyle = editor.getActiveFontStyle();
+  const textAlign = editor.getActiveTextAlign();
 
   const selectedObject = editor.selectedObjects.at(0);
   const isText = isTextType(selectedObject?.type);
+  const isBold = fontWeight > FONT_WEIGHT_NORMAL;
+  const isItalic = fontStyle === "italic";
+  const isUnderline = editor.getActiveTextUnderline();
+  const isLinethrough = editor.getActiveTextLinethrough();
+
+  const toggleBold = () => {
+    if (!selectedObject) {
+      return;
+    }
+    const newWeight = isBold ? FONT_WEIGHT_NORMAL : FONT_WEIGHT_BOLD;
+    editor.changeFontWeight(newWeight);
+    refreshToolbar();
+  };
+
+  const toggleItalic = () => {
+    if (!selectedObject) {
+      return;
+    }
+    const newStyle = isItalic ? "normal" : "italic";
+    editor.changeFontStyle(newStyle);
+    refreshToolbar();
+  };
+
+  const toggleLinethrough = () => {
+    if (!selectedObject) {
+      return;
+    }
+    editor.changeTextLinethrough(!isLinethrough);
+    refreshToolbar();
+  };
+
+  const toggleUnderline = () => {
+    if (!selectedObject) {
+      return;
+    }
+    editor.changeTextUnderline(!isUnderline);
+    refreshToolbar();
+  };
 
   if (editor.selectedObjects.length === 0) {
     return (
@@ -112,6 +172,117 @@ export default function Toolbar({
             </Button>
           </Hint>
         </div>
+      )}
+      {isText && (
+        <div className="flex h-full items-center justify-center">
+          <Hint label="Bold" side="bottom" sideOffset={5}>
+            <Button
+              onClick={toggleBold}
+              size="icon"
+              variant="ghost"
+              className={cn(isBold && "bg-gray-100 dark:bg-gray-900")}
+            >
+              <Bold className="size-4" />
+            </Button>
+          </Hint>
+        </div>
+      )}
+      {isText && (
+        <div className="flex h-full items-center justify-center">
+          <Hint label="Italic" side="bottom" sideOffset={5}>
+            <Button
+              onClick={toggleItalic}
+              size="icon"
+              variant="ghost"
+              className={cn(isItalic && "bg-gray-100 dark:bg-gray-900")}
+            >
+              <Italic className="size-4" />
+            </Button>
+          </Hint>
+        </div>
+      )}
+      {isText && (
+        <div className="flex h-full items-center justify-center">
+          <Hint label="Strikethrough" side="bottom" sideOffset={5}>
+            <Button
+              onClick={toggleLinethrough}
+              size="icon"
+              variant="ghost"
+              className={cn(isLinethrough && "bg-gray-100 dark:bg-gray-900")}
+            >
+              <Strikethrough className="size-4" />
+            </Button>
+          </Hint>
+        </div>
+      )}
+      {isText && (
+        <div className="flex h-full items-center justify-center">
+          <Hint label="Underline" side="bottom" sideOffset={5}>
+            <Button
+              onClick={toggleUnderline}
+              size="icon"
+              variant="ghost"
+              className={cn(isUnderline && "bg-gray-100 dark:bg-gray-900")}
+            >
+              <Underline className="size-4" />
+            </Button>
+          </Hint>
+        </div>
+      )}
+      {isText && (
+        <>
+          <div className="flex h-full items-center justify-center">
+            <Hint label="Left Align" side="bottom" sideOffset={5}>
+              <Button
+                onClick={() => {
+                  editor?.changeTextAlign("left");
+                  refreshToolbar();
+                }}
+                size="icon"
+                variant="ghost"
+                className={cn(
+                  textAlign === "left" && "bg-gray-100 dark:bg-gray-900"
+                )}
+              >
+                <AlignLeft className="size-4" />
+              </Button>
+            </Hint>
+          </div>
+          <div className="flex h-full items-center justify-center">
+            <Hint label="Center Align" side="bottom" sideOffset={5}>
+              <Button
+                onClick={() => {
+                  editor?.changeTextAlign("center");
+                  refreshToolbar();
+                }}
+                size="icon"
+                variant="ghost"
+                className={cn(
+                  textAlign === "center" && "bg-gray-100 dark:bg-gray-900"
+                )}
+              >
+                <AlignCenter className="size-4" />
+              </Button>
+            </Hint>
+          </div>
+          <div className="flex h-full items-center justify-center">
+            <Hint label="Right Align" side="bottom" sideOffset={5}>
+              <Button
+                onClick={() => {
+                  editor?.changeTextAlign("right");
+                  refreshToolbar();
+                }}
+                size="icon"
+                variant="ghost"
+                className={cn(
+                  textAlign === "right" && "bg-gray-100 dark:bg-gray-900"
+                )}
+              >
+                <AlignRight className="size-4" />
+              </Button>
+            </Hint>
+          </div>
+        </>
       )}
       <div className="flex h-full items-center justify-center">
         <Hint label="Bring Forward" side="bottom" sideOffset={5}>
