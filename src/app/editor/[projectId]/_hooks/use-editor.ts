@@ -57,9 +57,7 @@ interface BuildEditorProps {
   setStrokeWidth: Dispatch<SetStateAction<number>>;
   setStrokeDashArray: Dispatch<SetStateAction<number[]>>;
   fontFamily: string;
-  fontSize: number;
   setFontFamily: Dispatch<SetStateAction<string>>;
-  setFontSize: Dispatch<SetStateAction<number>>;
   selectedObjects: FabricObject[];
 }
 
@@ -74,9 +72,7 @@ function buildEditor({
   setStrokeWidth,
   setStrokeDashArray,
   fontFamily,
-  fontSize,
   setFontFamily,
-  setFontSize,
   selectedObjects,
 }: BuildEditorProps) {
   const getWorkspace = () =>
@@ -151,11 +147,6 @@ function buildEditor({
       //@ts-expect-error: fontFamily is a valid property for FabricObject
       return (selectedObject?.fontFamily as string) ?? fontFamily;
     },
-    getActiveFontSize: () => {
-      const selectedObject = selectedObjects.at(0);
-      //@ts-expect-error: fontSize is a valid property for FabricObject
-      return selectedObject?.fontSize ?? fontSize;
-    },
     changeFontStyle: (value: FontStyle) => {
       canvas.getActiveObjects().forEach((object) => {
         if (isTextType(object.type)) {
@@ -177,15 +168,6 @@ function buildEditor({
       canvas.getActiveObjects().forEach((obj) => {
         if (isTextType(obj.type)) {
           obj.set({ fontFamily: value });
-        }
-      });
-      canvas.renderAll();
-    },
-    changeFontSize: (value: number) => {
-      setFontSize(value);
-      canvas.getActiveObjects().forEach((obj) => {
-        if (isTextType(obj.type)) {
-          obj.set({ fontSize: value });
         }
       });
       canvas.renderAll();
@@ -400,9 +382,7 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
   const [strokeColor, setStrokeColor] = useState(STROKE_COLOR);
   const [strokeWidth, setStrokeWidth] = useState(STROKE_WIDTH);
   const [strokeDashArray, setStrokeDashArray] = useState(STROKE_DASH_ARRAY);
-
   const [fontFamily, setFontFamily] = useState(FONT_FAMILY);
-  const [fontSize, setFontSize] = useState(FONT_SIZE);
 
   useAutoResize({ canvas, container });
 
@@ -426,9 +406,7 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
       setStrokeWidth,
       setStrokeDashArray,
       fontFamily,
-      fontSize,
       setFontFamily,
-      setFontSize,
       canvas,
       selectedObjects,
     });
@@ -439,7 +417,6 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
     strokeWidth,
     strokeDashArray,
     fontFamily,
-    fontSize,
     selectedObjects,
   ]);
 

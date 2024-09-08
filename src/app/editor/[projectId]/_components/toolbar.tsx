@@ -20,6 +20,7 @@ import {
 import { isTextType } from "../utils";
 import { useState } from "react";
 import { FONT_WEIGHT_BOLD, FONT_WEIGHT_NORMAL } from "../constants";
+import FontSizeInput from "./font-size-input";
 
 interface ToolbarProps {
   editor?: Editor;
@@ -47,6 +48,7 @@ export default function Toolbar({
   const fontWeight = editor.getActiveFontWeight();
   const fontStyle = editor.getActiveFontStyle();
   const textAlign = editor.getActiveTextAlign();
+  const fontSize = editor.getActiveFontSize();
 
   const selectedObject = editor.selectedObjects.at(0);
   const isText = isTextType(selectedObject?.type);
@@ -86,6 +88,14 @@ export default function Toolbar({
       return;
     }
     editor.changeTextUnderline(!isUnderline);
+    refreshToolbar();
+  };
+
+  const onChangeFontSize = (value: number) => {
+    if (!selectedObject) {
+      return;
+    }
+    editor.changeFontSize(value);
     refreshToolbar();
   };
 
@@ -283,6 +293,13 @@ export default function Toolbar({
             </Hint>
           </div>
         </>
+      )}
+      {isText && (
+        <div className="flex h-full items-center justify-center">
+          <Hint label="Font Size" side="bottom" sideOffset={5}>
+            <FontSizeInput value={fontSize} onChange={onChangeFontSize} />
+          </Hint>
+        </div>
       )}
       <div className="flex h-full items-center justify-center">
         <Hint label="Bring Forward" side="bottom" sideOffset={5}>
