@@ -93,6 +93,26 @@ function buildEditor({
   };
 
   return {
+    delete: () => {
+      canvas.getActiveObjects().forEach((object) => {
+        canvas.remove(object);
+      });
+      canvas.discardActiveObject();
+      canvas.renderAll();
+    },
+    changeFontSize: (value: number) => {
+      canvas.getActiveObjects().forEach((object) => {
+        if (isTextType(object.type)) {
+          object.set({ fontSize: value });
+        }
+      });
+      canvas.renderAll();
+    },
+    getActiveFontSize: () => {
+      const selectedObject = selectedObjects.at(0);
+      //@ts-expect-error: fontSize is a valid property for FabricObject
+      return (selectedObject?.fontSize as number) ?? FONT_SIZE;
+    },
     changeTextAlign: (value: TextAlign) => {
       canvas.getActiveObjects().forEach((object) => {
         if (isTextType(object.type)) {
