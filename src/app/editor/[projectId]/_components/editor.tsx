@@ -16,6 +16,7 @@ import StrokeWidthSidebar from "./stroke-width-sidebar";
 import OpacitySidebar from "./opacity-sidebar";
 import TextSidebar from "./text-sidebar";
 import FontSidebar from "./font-sidebar";
+import ImageSidebar from "./image-sidebar";
 
 export default function Editor() {
   const [activeTool, setActiveTool] = useState<ActiveTool>("select");
@@ -108,6 +109,11 @@ export default function Editor() {
           activeTool={activeTool}
           onChangeActiveTool={onChangeActiveTool}
         />
+        <ImageSidebar
+          editor={editor}
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+        />
         <main className="relative flex flex-1 flex-col overflow-auto bg-muted">
           <Toolbar
             key={JSON.stringify(editor?.canvas.getActiveObject())}
@@ -116,7 +122,7 @@ export default function Editor() {
             onChangeActiveTool={onChangeActiveTool}
           />
           <div
-            className="h-[calc(100dvh-124px)] flex-1 bg-muted"
+            className="h-[calc(100dvh-176px)] flex-1 bg-muted"
             ref={containerRef}
           >
             <canvas ref={canvasRef} />

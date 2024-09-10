@@ -9,6 +9,7 @@ import {
 } from "react";
 import {
   Circle,
+  FabricImage,
   FabricObject,
   InteractiveFabricObject,
   Polygon,
@@ -93,6 +94,18 @@ function buildEditor({
   };
 
   return {
+    addImage: async (value: string) => {
+      const image = await FabricImage.fromURL(value, {
+        crossOrigin: "anonymous",
+      });
+      const workspace = getWorkspace();
+      if (!workspace) {
+        return;
+      }
+      image.scaleToWidth(workspace.width);
+      image.scaleToHeight(workspace.height);
+      addToCanvas(image);
+    },
     delete: () => {
       canvas.getActiveObjects().forEach((object) => {
         canvas.remove(object);

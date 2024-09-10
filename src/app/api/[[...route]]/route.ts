@@ -1,11 +1,11 @@
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
 
-import usersApp from "./users";
+import imagesApp from "./images";
 
 export const runtime = "nodejs";
 
-const app = new Hono().basePath("/api").route("/users", usersApp);
+const app = new Hono().basePath("/api").route("/images", imagesApp);
 
 export const GET = handle(app);
 export const POST = handle(app);
