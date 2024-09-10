@@ -8,6 +8,7 @@ import { useGetImages } from "../_hooks/use-get-images";
 import { AlertTriangle, Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { UploadButton } from "@/lib/uploadthing";
 
 interface ImageSidebarProps {
   activeTool: ActiveTool;
@@ -46,6 +47,21 @@ export default function ImageSidebar({
         </div>
       )}
       <ScrollArea>
+        <div className="border-b p-4">
+          <UploadButton
+            appearance={{
+              button: "w-full text-sm font-medium",
+              allowedContent: "hidden",
+            }}
+            content={{
+              button: "Upload Image",
+            }}
+            endpoint="imageUploader"
+            onClientUploadComplete={(res) => {
+              editor?.addImage(res[0].url);
+            }}
+          />
+        </div>
         <div className="p-4">
           <div className="grid gap-2">
             {images &&
