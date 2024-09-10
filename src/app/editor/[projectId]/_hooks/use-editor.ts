@@ -23,7 +23,7 @@ import {
 } from "fabric";
 import { useAutoResize } from "./use-auto-resize";
 import { useCanvasEvents } from "./use-canvas-events";
-import { isTextType } from "../utils";
+import { createFilter, isTextType } from "../utils";
 import {
   FILL_COLOR,
   FONT_FAMILY,
@@ -33,7 +33,7 @@ import {
   STROKE_DASH_ARRAY,
   STROKE_WIDTH,
 } from "../constants";
-import type { FontStyle, FontWeight, TextAlign } from "../types";
+import type { Filter, FontStyle, FontWeight, TextAlign } from "../types";
 
 interface CustomFabricObjectProps {
   id?: string;
@@ -94,6 +94,26 @@ function buildEditor({
   };
 
   return {
+    getActiveImageFilters: () => {
+      const selectedObject = selectedObjects.at(0);
+
+      return selectedObject instanceof FabricImage
+        ? selectedObject.filters
+        : [{ type: "none" }];
+    },
+    changeImageFilter: (value: Filter) => {
+      const objects = canvas.getActiveObjects();
+      objects.forEach((object) => {
+        if (object instanceof FabricImage) {
+          const imageObject = object;
+          const effect = createFilter(value);
+          imageObject.filters = effect ? [effect] : [];
+          imageObject.applyFilters();
+          canvas.renderAll();
+        }
+      });
+      canvas.renderAll();
+    },
     addImage: async (value: string) => {
       const image = await FabricImage.fromURL(value, {
         crossOrigin: "anonymous",

@@ -1,3 +1,5 @@
+import type { FILTERS } from "./constants";
+
 export type ActiveTool =
   | "select"
   | "shapes"
@@ -23,3 +25,5 @@ export type FontWeight = FontWeightNormal | FontWeightBold;
 export type FontStyle = "normal" | "italic";
 
 export type TextAlign = "left" | "center" | "right";
+
+export type Filter = (typeof FILTERS)[number];

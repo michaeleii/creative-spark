@@ -22,6 +22,7 @@ import { isTextType } from "../utils";
 import { useState } from "react";
 import { FONT_WEIGHT_BOLD, FONT_WEIGHT_NORMAL } from "../constants";
 import FontSizeInput from "./font-size-input";
+import { TbColorFilter } from "react-icons/tb";
 
 interface ToolbarProps {
   editor?: Editor;
@@ -57,6 +58,7 @@ export default function Toolbar({
   const isItalic = fontStyle === "italic";
   const isUnderline = editor.getActiveTextUnderline();
   const isLinethrough = editor.getActiveTextLinethrough();
+  const isImage = selectedObject?.type === "image";
 
   const toggleBold = () => {
     if (!selectedObject) {
@@ -108,25 +110,27 @@ export default function Toolbar({
 
   return (
     <div className="z-[49] flex h-[56px] w-full shrink-0 items-center gap-x-2 overflow-x-auto border-b bg-background p-2">
-      <div className="flex h-full items-center justify-center">
-        <Hint label="Color" side="bottom" sideOffset={5}>
-          <Button
-            onClick={() => onChangeActiveTool("fill")}
-            size="icon"
-            variant="ghost"
-            className={cn(
-              activeTool === "fill" && "bg-gray-100 dark:bg-gray-900"
-            )}
-          >
-            <div
-              className="size-4 rounded-sm border"
-              style={{
-                backgroundColor: fillColor,
-              }}
-            ></div>
-          </Button>
-        </Hint>
-      </div>
+      {!isImage && (
+        <div className="flex h-full items-center justify-center">
+          <Hint label="Color" side="bottom" sideOffset={5}>
+            <Button
+              onClick={() => onChangeActiveTool("fill")}
+              size="icon"
+              variant="ghost"
+              className={cn(
+                activeTool === "fill" && "bg-gray-100 dark:bg-gray-900"
+              )}
+            >
+              <div
+                className="size-4 rounded-sm border"
+                style={{
+                  backgroundColor: fillColor,
+                }}
+              ></div>
+            </Button>
+          </Hint>
+        </div>
+      )}
       {!isText && (
         <>
           <div className="flex h-full items-center justify-center">
@@ -294,6 +298,24 @@ export default function Toolbar({
             </Hint>
           </div>
         </>
+      )}
+      {isImage && (
+        <div className="flex h-full items-center justify-center">
+          <Hint label="Filters" side="bottom" sideOffset={5}>
+            <Button
+              onClick={() => {
+                onChangeActiveTool("filter");
+              }}
+              size="icon"
+              variant="ghost"
+              className={cn(
+                activeTool === "filter" && "bg-gray-100 dark:bg-gray-900"
+              )}
+            >
+              <TbColorFilter className="size-4" />
+            </Button>
+          </Hint>
+        </div>
       )}
       {isText && (
         <div className="flex h-full items-center justify-center">
