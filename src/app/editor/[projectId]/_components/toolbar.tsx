@@ -14,6 +14,7 @@ import {
   Bold,
   ChevronDown,
   Italic,
+  SquareSplitHorizontal,
   Strikethrough,
   Trash2,
   Underline,
@@ -313,6 +314,24 @@ export default function Toolbar({
               )}
             >
               <TbColorFilter className="size-4" />
+            </Button>
+          </Hint>
+        </div>
+      )}
+      {isImage && (
+        <div className="flex h-full items-center justify-center">
+          <Hint label="Remove background" side="bottom" sideOffset={5}>
+            <Button
+              onClick={() => {
+                onChangeActiveTool("remove-bg");
+              }}
+              size="icon"
+              variant="ghost"
+              className={cn(
+                activeTool === "remove-bg" && "bg-gray-100 dark:bg-gray-900"
+              )}
+            >
+              <SquareSplitHorizontal className="size-4" />
             </Button>
           </Hint>
         </div>
