@@ -15,7 +15,7 @@ interface AISidebarProps {
   editor?: Editor;
 }
 
-export default function AiSidebar({
+export default function AISidebar({
   activeTool,
   onChangeActiveTool,
   editor,
