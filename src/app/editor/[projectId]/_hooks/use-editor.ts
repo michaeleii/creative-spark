@@ -72,6 +72,7 @@ interface BuildEditorProps {
   selectedObjects: FabricObject[];
   copy: () => Promise<void>;
   paste: () => Promise<void>;
+  autoZoom: () => Promise<void>;
 }
 
 function buildEditor({
@@ -89,6 +90,7 @@ function buildEditor({
   selectedObjects,
   copy,
   paste,
+  autoZoom,
 }: BuildEditorProps) {
   const getWorkspace = () =>
     canvas.getObjects().find((obj) => obj.name === "clip");
@@ -108,6 +110,19 @@ function buildEditor({
   };
 
   return {
+    getWorkspace,
+    changeSize: async (value: { width: number; height: number }) => {
+      const workspace = getWorkspace();
+      workspace?.set(value);
+      await autoZoom();
+      // TODO: Save
+    },
+    changeBackground: (value: string) => {
+      const workspace = getWorkspace();
+      workspace?.set({ fill: value });
+      canvas.renderAll();
+      // TODO: Save
+    },
     changeFreeDrawingBrush: (value: BrushType) => {
       switch (value) {
         case "pencil":
@@ -489,7 +504,7 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
 
   const { copy, paste } = useClipboard({ canvas });
 
-  useAutoResize({ canvas, container });
+  const { autoZoom } = useAutoResize({ canvas, container });
 
   useCanvasEvents({
     canvas,
@@ -516,6 +531,7 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
       selectedObjects,
       copy,
       paste,
+      autoZoom,
     });
   }, [
     canvas,
@@ -527,6 +543,7 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
     selectedObjects,
     copy,
     paste,
+    autoZoom,
   ]);
 
   const init = useCallback(
