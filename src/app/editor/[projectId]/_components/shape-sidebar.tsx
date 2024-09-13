@@ -12,7 +12,7 @@ import type { Editor } from "../_hooks/use-editor";
 interface ShapeSidebarProps {
   activeTool: ActiveTool;
   onChangeActiveTool: (tool: ActiveTool) => void;
-  editor?: Editor;
+  editor: Editor;
 }
 
 export default function ShapeSidebar({
@@ -33,16 +33,16 @@ export default function ShapeSidebar({
       />
       <ScrollArea>
         <div className="grid grid-cols-3 gap-4 p-4">
-          <ShapeTool onClick={() => editor?.addCircle()} icon={FaCircle} />
-          <ShapeTool onClick={() => editor?.addSquare()} icon={FaSquare} />
-          <ShapeTool onClick={() => editor?.addStar()} icon={FaStar} />
-          <ShapeTool onClick={() => editor?.addTriangle()} icon={IoTriangle} />
+          <ShapeTool onClick={() => editor.addCircle()} icon={FaCircle} />
+          <ShapeTool onClick={() => editor.addSquare()} icon={FaSquare} />
+          <ShapeTool onClick={() => editor.addStar()} icon={FaStar} />
+          <ShapeTool onClick={() => editor.addTriangle()} icon={IoTriangle} />
           <ShapeTool
-            onClick={() => editor?.addInverseTriangle()}
+            onClick={() => editor.addInverseTriangle()}
             icon={IoTriangle}
             className="rotate-180"
           />
-          <ShapeTool onClick={() => editor?.addDiamond()} icon={FaDiamond} />
+          <ShapeTool onClick={() => editor.addDiamond()} icon={FaDiamond} />
         </div>
       </ScrollArea>
       <ToolSidebarClose

@@ -12,7 +12,7 @@ import { useState } from "react";
 interface AISidebarProps {
   activeTool: ActiveTool;
   onChangeActiveTool: (tool: ActiveTool) => void;
-  editor?: Editor;
+  editor: Editor;
 }
 
 export default function AISidebar({
@@ -22,9 +22,6 @@ export default function AISidebar({
 }: AISidebarProps) {
   const [prompt, setPrompt] = useState("");
   const { mutate: generateImage, isPending } = useGenerateImage();
-  if (!editor) {
-    return null;
-  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

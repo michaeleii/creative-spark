@@ -11,7 +11,7 @@ import { useEffect, useMemo, useState } from "react";
 interface OpacitySidebarProps {
   activeTool: ActiveTool;
   onChangeActiveTool: (tool: ActiveTool) => void;
-  editor?: Editor;
+  editor: Editor;
 }
 
 export default function OpacitySidebar({
@@ -19,10 +19,10 @@ export default function OpacitySidebar({
   onChangeActiveTool,
   editor,
 }: OpacitySidebarProps) {
-  const initialOpacity = editor?.getActiveOpacity() ?? 1;
+  const initialOpacity = editor.getActiveOpacity() ?? 1;
   const selectedObject = useMemo(
-    () => editor?.selectedObjects.at(0),
-    [editor?.selectedObjects]
+    () => editor.selectedObjects.at(0),
+    [editor.selectedObjects]
   );
 
   const [opacity, setOpacity] = useState(initialOpacity);
@@ -51,7 +51,7 @@ export default function OpacitySidebar({
             value={[opacity]}
             onValueChange={([value]) => {
               setOpacity(value);
-              editor?.changeOpacity(value);
+              editor.changeOpacity(value);
             }}
             min={0}
             max={1}

@@ -10,7 +10,7 @@ import { FONTS } from "../constants";
 interface FontSidebarProps {
   activeTool: ActiveTool;
   onChangeActiveTool: (tool: ActiveTool) => void;
-  editor?: Editor;
+  editor: Editor;
 }
 
 export default function FontSidebar({
@@ -33,7 +33,7 @@ export default function FontSidebar({
               key={font}
               className={cn(
                 "h-16 w-full justify-start text-left",
-                editor?.getActiveFontFamily() === font &&
+                editor.getActiveFontFamily() === font &&
                   "border-2 border-blue-500"
               )}
               variant="secondary"
@@ -44,7 +44,7 @@ export default function FontSidebar({
                 padding: "8px 16px",
               }}
               onClick={() => {
-                editor?.changeFontFamily(font);
+                editor.changeFontFamily(font);
               }}
             >
               {font}

@@ -88,3 +88,5 @@ export const FILTERS = [
   "saturation",
   "gamma",
 ] as const;
+
+export const BRUSH_TYPES = ["pencil", "circle", "spray"] as const;

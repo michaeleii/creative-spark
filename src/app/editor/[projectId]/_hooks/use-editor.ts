@@ -9,12 +9,15 @@ import {
 } from "react";
 import {
   Circle,
+  CircleBrush,
   FabricImage,
   FabricObject,
   InteractiveFabricObject,
+  PencilBrush,
   Polygon,
   Rect,
   Shadow,
+  SprayBrush,
   Textbox,
   Triangle,
   type Canvas,
@@ -33,7 +36,13 @@ import {
   STROKE_DASH_ARRAY,
   STROKE_WIDTH,
 } from "../constants";
-import type { Filter, FontStyle, FontWeight, TextAlign } from "../types";
+import type {
+  BrushType,
+  Filter,
+  FontStyle,
+  FontWeight,
+  TextAlign,
+} from "../types";
 import useClipboard from "./use-clipboard";
 
 interface CustomFabricObjectProps {
@@ -99,6 +108,32 @@ function buildEditor({
   };
 
   return {
+    changeFreeDrawingBrush: (value: BrushType) => {
+      switch (value) {
+        case "pencil":
+          canvas.freeDrawingBrush = new PencilBrush(canvas);
+          break;
+        case "circle":
+          canvas.freeDrawingBrush = new CircleBrush(canvas);
+          break;
+        case "spray":
+          canvas.freeDrawingBrush = new SprayBrush(canvas);
+          break;
+        default:
+          canvas.freeDrawingBrush = new PencilBrush(canvas);
+      }
+    },
+    enableDrawingMode: () => {
+      canvas.discardActiveObject();
+      canvas.renderAll();
+      canvas.isDrawingMode = true;
+      canvas.freeDrawingBrush = new PencilBrush(canvas);
+      canvas.freeDrawingBrush.width = strokeWidth;
+      canvas.freeDrawingBrush.color = strokeColor;
+    },
+    disableDrawingMode: () => {
+      canvas.isDrawingMode = false;
+    },
     copy,
     paste,
     getActiveImageFilters: () => {
@@ -306,6 +341,9 @@ function buildEditor({
       canvas.getActiveObjects().forEach((obj) => {
         obj.set({ strokeWidth: value });
       });
+      if (canvas.freeDrawingBrush) {
+        canvas.freeDrawingBrush.width = strokeWidth;
+      }
       canvas.renderAll();
     },
     changeStrokeColor: (value: string) => {
@@ -317,6 +355,9 @@ function buildEditor({
         }
         obj.set({ stroke: value });
       });
+      if (canvas.freeDrawingBrush) {
+        canvas.freeDrawingBrush.color = strokeColor;
+      }
       canvas.renderAll();
     },
     changeStrokeDashArray: (value: number[]) => {

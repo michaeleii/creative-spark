@@ -9,7 +9,7 @@ import ColorPicker from "./color-picker";
 interface FillColorSidebarProps {
   activeTool: ActiveTool;
   onChangeActiveTool: (tool: ActiveTool) => void;
-  editor?: Editor;
+  editor: Editor;
 }
 
 export default function FillColorSidebar({
@@ -17,9 +17,6 @@ export default function FillColorSidebar({
   onChangeActiveTool,
   editor,
 }: FillColorSidebarProps) {
-  if (!editor) {
-    return null;
-  }
   const fillColor = editor.getActiveFillColor();
 
   return (

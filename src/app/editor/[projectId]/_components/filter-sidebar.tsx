@@ -12,7 +12,7 @@ import { FabricImage } from "fabric";
 interface FilterSidebarProps {
   activeTool: ActiveTool;
   onChangeActiveTool: (tool: ActiveTool) => void;
-  editor?: Editor;
+  editor: Editor;
 }
 
 export default function FilterSidebar({
@@ -21,11 +21,11 @@ export default function FilterSidebar({
   editor,
 }: FilterSidebarProps) {
   const selectedObject = useMemo(
-    () => editor?.selectedObjects.at(0),
-    [editor?.selectedObjects]
+    () => editor.selectedObjects.at(0),
+    [editor.selectedObjects]
   );
 
-  const activeImageFilters = editor?.getActiveImageFilters();
+  const activeImageFilters = editor.getActiveImageFilters();
   const initialActiveFilter =
     activeImageFilters && activeImageFilters.at(0)
       ? (activeImageFilters.at(0)?.type as Filter)
@@ -66,7 +66,7 @@ export default function FilterSidebar({
               size="lg"
               onClick={() => {
                 setActiveFilter(filter);
-                editor?.changeImageFilter(filter);
+                editor.changeImageFilter(filter);
               }}
             >
               {filter}

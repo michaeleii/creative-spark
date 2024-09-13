@@ -1,4 +1,4 @@
-import type { FILTERS } from "./constants";
+import type { BRUSH_TYPES, FILTERS } from "./constants";
 
 export type ActiveTool =
   | "select"
@@ -27,3 +27,5 @@ export type FontStyle = "normal" | "italic";
 export type TextAlign = "left" | "center" | "right";
 
 export type Filter = (typeof FILTERS)[number];
+
+export type BrushType = (typeof BRUSH_TYPES)[number];

@@ -5,6 +5,7 @@ import {
   Sparkles,
   Type,
   Shapes,
+  Pencil,
 } from "lucide-react";
 import { SidebarItem } from "./sidebar-item";
 import type { ActiveTool } from "../types";
@@ -44,6 +45,12 @@ export default function Sidebar({
           label="Shapes"
           isActive={activeTool === "shapes"}
           onClick={() => onChangeActiveTool("shapes")}
+        />
+        <SidebarItem
+          icon={Pencil}
+          label="Draw"
+          isActive={activeTool === "draw"}
+          onClick={() => onChangeActiveTool("draw")}
         />
         <SidebarItem
           icon={Sparkles}

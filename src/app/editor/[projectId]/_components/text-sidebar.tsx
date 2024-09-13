@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 interface TextSidebarProps {
   activeTool: ActiveTool;
   onChangeActiveTool: (tool: ActiveTool) => void;
-  editor?: Editor;
+  editor: Editor;
 }
 
 export default function TextSidebar({
@@ -27,7 +27,7 @@ export default function TextSidebar({
       <ToolSidebarHeader title="Text" description="Add text to your canvas" />
       <ScrollArea>
         <div className="space-y-4 border-b p-4">
-          <Button className="w-full" onClick={() => editor?.addText("Textbox")}>
+          <Button className="w-full" onClick={() => editor.addText("Textbox")}>
             Add a textbox
           </Button>
           <Button
@@ -35,7 +35,7 @@ export default function TextSidebar({
             variant="secondary"
             size="lg"
             onClick={() =>
-              editor?.addText("Heading", {
+              editor.addText("Heading", {
                 fontSize: 80,
                 fontWeight: 700,
               })
@@ -48,7 +48,7 @@ export default function TextSidebar({
             variant="secondary"
             size="lg"
             onClick={() =>
-              editor?.addText("Subheading", {
+              editor.addText("Subheading", {
                 fontSize: 44,
                 fontWeight: 600,
               })
@@ -61,7 +61,7 @@ export default function TextSidebar({
             variant="secondary"
             size="lg"
             onClick={() =>
-              editor?.addText("Paragraph", {
+              editor.addText("Paragraph", {
                 fontSize: 32,
               })
             }

@@ -13,7 +13,7 @@ import { useRemoveBG } from "../_hooks/use-remove-bg";
 interface RemoveBGSidebarProps {
   activeTool: ActiveTool;
   onChangeActiveTool: (tool: ActiveTool) => void;
-  editor?: Editor;
+  editor: Editor;
 }
 
 export default function RemoveBGSidebar({
@@ -22,9 +22,7 @@ export default function RemoveBGSidebar({
   editor,
 }: RemoveBGSidebarProps) {
   const { mutate: removeImageBackground, isPending } = useRemoveBG();
-  if (!editor) {
-    return null;
-  }
+
   const selectedObject = editor.selectedObjects.at(0);
   const imageSrc =
     selectedObject instanceof FabricImage

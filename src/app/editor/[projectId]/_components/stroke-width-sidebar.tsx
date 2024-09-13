@@ -13,7 +13,7 @@ import { arrayIsEqual } from "../utils";
 interface StrokeWidthSidebarProps {
   activeTool: ActiveTool;
   onChangeActiveTool: (tool: ActiveTool) => void;
-  editor?: Editor;
+  editor: Editor;
 }
 
 export default function StrokeWidthSidebar({
@@ -21,8 +21,8 @@ export default function StrokeWidthSidebar({
   onChangeActiveTool,
   editor,
 }: StrokeWidthSidebarProps) {
-  const strokeWidth = editor?.getActiveStrokeWidth() ?? STROKE_WIDTH;
-  const strokeType = editor?.getActiveStrokeDashArray() ?? STROKE_DASH_ARRAY;
+  const strokeWidth = editor.getActiveStrokeWidth() ?? STROKE_WIDTH;
+  const strokeType = editor.getActiveStrokeDashArray() ?? STROKE_DASH_ARRAY;
 
   return (
     <aside
@@ -40,7 +40,7 @@ export default function StrokeWidthSidebar({
           <Label className="text-sm">Stroke width</Label>
           <Slider
             value={[strokeWidth]}
-            onValueChange={([value]) => editor?.changeStrokeWidth(value)}
+            onValueChange={([value]) => editor.changeStrokeWidth(value)}
           />
         </div>
         <div className="space-y-4 border-b p-4">
@@ -52,7 +52,7 @@ export default function StrokeWidthSidebar({
               "h-16 w-full justify-start p-2 px-4 text-left",
               arrayIsEqual(strokeType, []) && "border-2 border-blue-500"
             )}
-            onClick={() => editor?.changeStrokeDashArray([])}
+            onClick={() => editor.changeStrokeDashArray([])}
           >
             <div className="w-full rounded-full border-4 border-black" />
           </Button>
@@ -63,7 +63,7 @@ export default function StrokeWidthSidebar({
               "h-16 w-full justify-start p-2 px-4 text-left",
               arrayIsEqual(strokeType, [5, 5]) && "border-2 border-blue-500"
             )}
-            onClick={() => editor?.changeStrokeDashArray([5, 5])}
+            onClick={() => editor.changeStrokeDashArray([5, 5])}
           >
             <div className="w-full rounded-full border-4 border-dashed border-black" />
           </Button>

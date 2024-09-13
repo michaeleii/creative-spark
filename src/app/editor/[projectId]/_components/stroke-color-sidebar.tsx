@@ -9,7 +9,7 @@ import type { Editor } from "../_hooks/use-editor";
 interface StrokeColorSidebarProps {
   activeTool: ActiveTool;
   onChangeActiveTool: (tool: ActiveTool) => void;
-  editor?: Editor;
+  editor: Editor;
 }
 
 export default function StrokeColorSidebar({
@@ -17,9 +17,6 @@ export default function StrokeColorSidebar({
   onChangeActiveTool,
   editor,
 }: StrokeColorSidebarProps) {
-  if (!editor) {
-    return null;
-  }
   const strokeColor = editor.getActiveStrokeColor();
 
   return (
@@ -38,7 +35,7 @@ export default function StrokeColorSidebar({
           <ColorPicker
             value={strokeColor}
             onChange={(value) => {
-              editor?.changeStrokeColor(value);
+              editor.changeStrokeColor(value);
             }}
           />
         </div>

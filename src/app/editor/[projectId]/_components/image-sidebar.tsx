@@ -13,7 +13,7 @@ import { UploadButton } from "@/lib/uploadthing";
 interface ImageSidebarProps {
   activeTool: ActiveTool;
   onChangeActiveTool: (tool: ActiveTool) => void;
-  editor?: Editor;
+  editor: Editor;
 }
 
 export default function ImageSidebar({
@@ -58,7 +58,7 @@ export default function ImageSidebar({
             }}
             endpoint="imageUploader"
             onClientUploadComplete={(res) => {
-              editor?.addImage(res[0].url);
+              editor.addImage(res[0].url);
             }}
           />
         </div>
@@ -69,7 +69,7 @@ export default function ImageSidebar({
                 <button
                   key={image.id}
                   onClick={async () => {
-                    await editor?.addImage(image.urls.regular);
+                    await editor.addImage(image.urls.regular);
                   }}
                   className="group relative h-[150px] w-full overflow-hidden rounded-sm border bg-muted transition hover:opacity-75"
                 >

@@ -20,26 +20,10 @@ import ImageSidebar from "./image-sidebar";
 import FilterSidebar from "./filter-sidebar";
 import AISidebar from "./ai-sidebar";
 import RemoveBGSidebar from "./remove-bg-sidebar";
+import DrawingSidebar from "./drawing-sidebar";
 
 export default function Editor() {
   const [activeTool, setActiveTool] = useState<ActiveTool>("select");
-
-  const onChangeActiveTool = useCallback(
-    (tool: ActiveTool) => {
-      if (tool === activeTool) {
-        return setActiveTool("select");
-      }
-      if (tool === "draw") {
-        // TODO: Implement draw mode
-      }
-
-      if (activeTool === "draw") {
-        // TODO: Disable draw mode
-      }
-      setActiveTool(tool);
-    },
-    [activeTool]
-  );
 
   const onClearSelection = useCallback(() => {
     if (SELECTION_DEPENDENT_TOOLS.includes(activeTool)) {
@@ -50,6 +34,25 @@ export default function Editor() {
   const { init, editor } = useEditor({
     clearSelectionCallback: onClearSelection,
   });
+
+  const onChangeActiveTool = useCallback(
+    (tool: ActiveTool) => {
+      if (tool === "draw") {
+        editor?.enableDrawingMode();
+      }
+
+      if (activeTool === "draw") {
+        editor?.disableDrawingMode();
+      }
+
+      if (tool === activeTool) {
+        return setActiveTool("select");
+      }
+
+      setActiveTool(tool);
+    },
+    [activeTool, editor]
+  );
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -77,61 +80,70 @@ export default function Editor() {
           activeTool={activeTool}
           onChangeActiveTool={onChangeActiveTool}
         />
-        <ShapeSidebar
-          editor={editor}
-          activeTool={activeTool}
-          onChangeActiveTool={onChangeActiveTool}
-        />
-        <FillColorSidebar
-          editor={editor}
-          activeTool={activeTool}
-          onChangeActiveTool={onChangeActiveTool}
-        />
-        <StrokeColorSidebar
-          editor={editor}
-          activeTool={activeTool}
-          onChangeActiveTool={onChangeActiveTool}
-        />
-        <StrokeWidthSidebar
-          editor={editor}
-          activeTool={activeTool}
-          onChangeActiveTool={onChangeActiveTool}
-        />
-        <OpacitySidebar
-          editor={editor}
-          activeTool={activeTool}
-          onChangeActiveTool={onChangeActiveTool}
-        />
-        <TextSidebar
-          editor={editor}
-          activeTool={activeTool}
-          onChangeActiveTool={onChangeActiveTool}
-        />
-        <FontSidebar
-          editor={editor}
-          activeTool={activeTool}
-          onChangeActiveTool={onChangeActiveTool}
-        />
-        <ImageSidebar
-          editor={editor}
-          activeTool={activeTool}
-          onChangeActiveTool={onChangeActiveTool}
-        />
-        <FilterSidebar
-          editor={editor}
-          activeTool={activeTool}
-          onChangeActiveTool={onChangeActiveTool}
-        />
-        <AISidebar
-          editor={editor}
-          activeTool={activeTool}
-          onChangeActiveTool={onChangeActiveTool}
-        />
-        <RemoveBGSidebar
-          editor={editor}
-          activeTool={activeTool}
-          onChangeActiveTool={onChangeActiveTool}
-        />
+        {editor && (
+          <>
+            <ShapeSidebar
+              editor={editor}
+              activeTool={activeTool}
+              onChangeActiveTool={onChangeActiveTool}
+            />
+            <FillColorSidebar
+              editor={editor}
+              activeTool={activeTool}
+              onChangeActiveTool={onChangeActiveTool}
+            />
+            <StrokeColorSidebar
+              editor={editor}
+              activeTool={activeTool}
+              onChangeActiveTool={onChangeActiveTool}
+            />
+            <StrokeWidthSidebar
+              editor={editor}
+              activeTool={activeTool}
+              onChangeActiveTool={onChangeActiveTool}
+            />
+            <OpacitySidebar
+              editor={editor}
+              activeTool={activeTool}
+              onChangeActiveTool={onChangeActiveTool}
+            />
+            <TextSidebar
+              editor={editor}
+              activeTool={activeTool}
+              onChangeActiveTool={onChangeActiveTool}
+            />
+            <FontSidebar
+              editor={editor}
+              activeTool={activeTool}
+              onChangeActiveTool={onChangeActiveTool}
+            />
+            <ImageSidebar
+              editor={editor}
+              activeTool={activeTool}
+              onChangeActiveTool={onChangeActiveTool}
+            />
+            <FilterSidebar
+              editor={editor}
+              activeTool={activeTool}
+              onChangeActiveTool={onChangeActiveTool}
+            />
+            <AISidebar
+              editor={editor}
+              activeTool={activeTool}
+              onChangeActiveTool={onChangeActiveTool}
+            />
+            <RemoveBGSidebar
+              editor={editor}
+              activeTool={activeTool}
+              onChangeActiveTool={onChangeActiveTool}
+            />
+            <DrawingSidebar
+              editor={editor}
+              activeTool={activeTool}
+              onChangeActiveTool={onChangeActiveTool}
+            />
+          </>
+        )}
         <main className="relative flex flex-1 flex-col overflow-auto bg-muted">
           <Toolbar
             key={JSON.stringify(editor?.canvas.getActiveObject())}
