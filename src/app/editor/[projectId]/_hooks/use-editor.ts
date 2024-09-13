@@ -34,6 +34,7 @@ import {
   STROKE_WIDTH,
 } from "../constants";
 import type { Filter, FontStyle, FontWeight, TextAlign } from "../types";
+import useClipboard from "./use-clipboard";
 
 interface CustomFabricObjectProps {
   id?: string;
@@ -60,6 +61,8 @@ interface BuildEditorProps {
   fontFamily: string;
   setFontFamily: Dispatch<SetStateAction<string>>;
   selectedObjects: FabricObject[];
+  copy: () => Promise<void>;
+  paste: () => Promise<void>;
 }
 
 function buildEditor({
@@ -75,6 +78,8 @@ function buildEditor({
   fontFamily,
   setFontFamily,
   selectedObjects,
+  copy,
+  paste,
 }: BuildEditorProps) {
   const getWorkspace = () =>
     canvas.getObjects().find((obj) => obj.name === "clip");
@@ -94,6 +99,8 @@ function buildEditor({
   };
 
   return {
+    copy,
+    paste,
     getActiveImageFilters: () => {
       const selectedObject = selectedObjects.at(0);
 
@@ -437,6 +444,8 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
   const [strokeDashArray, setStrokeDashArray] = useState(STROKE_DASH_ARRAY);
   const [fontFamily, setFontFamily] = useState(FONT_FAMILY);
 
+  const { copy, paste } = useClipboard({ canvas });
+
   useAutoResize({ canvas, container });
 
   useCanvasEvents({
@@ -462,6 +471,8 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
       setFontFamily,
       canvas,
       selectedObjects,
+      copy,
+      paste,
     });
   }, [
     canvas,
@@ -471,6 +482,8 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
     strokeDashArray,
     fontFamily,
     selectedObjects,
+    copy,
+    paste,
   ]);
 
   const init = useCallback(

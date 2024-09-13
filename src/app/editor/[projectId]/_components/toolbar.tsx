@@ -13,6 +13,7 @@ import {
   ArrowUp,
   Bold,
   ChevronDown,
+  Copy,
   Italic,
   SquareSplitHorizontal,
   Strikethrough,
@@ -376,6 +377,20 @@ export default function Toolbar({
             )}
           >
             <RxTransparencyGrid className="size-4" />
+          </Button>
+        </Hint>
+      </div>
+      <div className="flex h-full items-center justify-center">
+        <Hint label="Duplicate" side="bottom" sideOffset={5}>
+          <Button
+            onClick={async () => {
+              await editor?.copy();
+              await editor?.paste();
+            }}
+            size="icon"
+            variant="ghost"
+          >
+            <Copy className="size-4" />
           </Button>
         </Hint>
       </div>
