@@ -122,6 +122,8 @@ function buildEditor({
         default:
           canvas.freeDrawingBrush = new PencilBrush(canvas);
       }
+      canvas.freeDrawingBrush.color = strokeColor;
+      canvas.freeDrawingBrush.width = strokeWidth;
     },
     enableDrawingMode: () => {
       canvas.discardActiveObject();
@@ -342,7 +344,7 @@ function buildEditor({
         obj.set({ strokeWidth: value });
       });
       if (canvas.freeDrawingBrush) {
-        canvas.freeDrawingBrush.width = strokeWidth;
+        canvas.freeDrawingBrush.width = value;
       }
       canvas.renderAll();
     },
@@ -356,7 +358,7 @@ function buildEditor({
         obj.set({ stroke: value });
       });
       if (canvas.freeDrawingBrush) {
-        canvas.freeDrawingBrush.color = strokeColor;
+        canvas.freeDrawingBrush.color = value;
       }
       canvas.renderAll();
     },
