@@ -32,9 +32,13 @@ import {
   FONT_FAMILY,
   FONT_SIZE,
   FONT_WEIGHT_NORMAL,
+  MAX_ZOOM_RATIO,
+  MIN_ZOOM_RATIO,
   STROKE_COLOR,
   STROKE_DASH_ARRAY,
   STROKE_WIDTH,
+  ZOOM_IN_RATIO,
+  ZOOM_OUT_RATIO,
 } from "../constants";
 import type {
   BrushType,
@@ -110,6 +114,25 @@ function buildEditor({
   };
 
   return {
+    autoZoom,
+    zoomIn: () => {
+      let zoomRatio = canvas.getZoom();
+      zoomRatio += ZOOM_IN_RATIO;
+      const centerPoint = canvas.getCenterPoint();
+      canvas.zoomToPoint(
+        centerPoint,
+        zoomRatio > MAX_ZOOM_RATIO ? MAX_ZOOM_RATIO : zoomRatio
+      );
+    },
+    zoomOut: () => {
+      let zoomRatio = canvas.getZoom();
+      zoomRatio -= ZOOM_OUT_RATIO;
+      const centerPoint = canvas.getCenterPoint();
+      canvas.zoomToPoint(
+        centerPoint,
+        zoomRatio < MIN_ZOOM_RATIO ? MIN_ZOOM_RATIO : zoomRatio
+      );
+    },
     getWorkspace,
     changeSize: async (value: { width: number; height: number }) => {
       const workspace = getWorkspace();

@@ -90,3 +90,8 @@ export const FILTERS = [
 ] as const;
 
 export const BRUSH_TYPES = ["pencil", "circle", "spray"] as const;
+
+export const MIN_ZOOM_RATIO = 0.2;
+export const MAX_ZOOM_RATIO = 2;
+export const ZOOM_IN_RATIO = 0.5;
+export const ZOOM_OUT_RATIO = 0.5;
