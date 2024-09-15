@@ -49,6 +49,7 @@ import type {
 } from "../types";
 import useClipboard from "./use-clipboard";
 import { useHistory } from "./use-history";
+import { useHotkeys } from "./use-hotkeys";
 
 interface CustomFabricObjectProps {
   id?: string;
@@ -555,6 +556,8 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
     clearSelectionCallback,
     save,
   });
+
+  useHotkeys({ canvas, undo, redo, copy, paste, save });
 
   const editor = useMemo(() => {
     if (!canvas) {
