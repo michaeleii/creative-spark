@@ -4,7 +4,7 @@ import { Minimize2, ZoomIn, ZoomOut } from "lucide-react";
 import type { Editor } from "../_hooks/use-editor";
 
 interface FooterProps {
-  editor: Editor;
+  editor?: Editor;
 }
 
 export default function Footer({ editor }: FooterProps) {
@@ -12,7 +12,7 @@ export default function Footer({ editor }: FooterProps) {
     <footer className="z-[49] flex h-[52px] w-full shrink-0 flex-row-reverse items-center gap-x-1 overflow-x-auto border-t bg-background p-2 px-4">
       <Hint label="Reset" side="top" sideOffset={10}>
         <Button
-          onClick={() => editor.autoZoom()}
+          onClick={() => editor?.autoZoom()}
           className="h-full"
           variant="ghost"
           size="icon"
@@ -22,7 +22,7 @@ export default function Footer({ editor }: FooterProps) {
       </Hint>
       <Hint label="Zoom in" side="top" sideOffset={10}>
         <Button
-          onClick={() => editor.zoomIn()}
+          onClick={() => editor?.zoomIn()}
           className="h-full"
           variant="ghost"
           size="icon"
@@ -32,7 +32,7 @@ export default function Footer({ editor }: FooterProps) {
       </Hint>
       <Hint label="Zoom out" side="top" sideOffset={10}>
         <Button
-          onClick={() => editor.zoomOut()}
+          onClick={() => editor?.zoomOut()}
           className="h-full"
           variant="ghost"
           size="icon"

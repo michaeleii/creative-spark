@@ -48,6 +48,7 @@ import type {
   TextAlign,
 } from "../types";
 import useClipboard from "./use-clipboard";
+import { useHistory } from "./use-history";
 
 interface CustomFabricObjectProps {
   id?: string;
@@ -77,6 +78,11 @@ interface BuildEditorProps {
   copy: () => Promise<void>;
   paste: () => Promise<void>;
   autoZoom: () => Promise<void>;
+  save: (skip?: boolean) => void;
+  undo: () => Promise<void>;
+  redo: () => Promise<void>;
+  canUndo: () => boolean;
+  canRedo: () => boolean;
 }
 
 function buildEditor({
@@ -95,6 +101,11 @@ function buildEditor({
   copy,
   paste,
   autoZoom,
+  save,
+  undo,
+  redo,
+  canUndo,
+  canRedo,
 }: BuildEditorProps) {
   const getWorkspace = () =>
     canvas.getObjects().find((obj) => obj.name === "clip");
@@ -114,6 +125,10 @@ function buildEditor({
   };
 
   return {
+    canUndo,
+    canRedo,
+    undo,
+    redo,
     autoZoom,
     zoomIn: () => {
       let zoomRatio = canvas.getZoom();
@@ -138,13 +153,13 @@ function buildEditor({
       const workspace = getWorkspace();
       workspace?.set(value);
       await autoZoom();
-      // TODO: Save
+      save();
     },
     changeBackground: (value: string) => {
       const workspace = getWorkspace();
       workspace?.set({ fill: value });
       canvas.renderAll();
-      // TODO: Save
+      save();
     },
     changeFreeDrawingBrush: (value: BrushType) => {
       switch (value) {
@@ -525,6 +540,11 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
   const [strokeDashArray, setStrokeDashArray] = useState(STROKE_DASH_ARRAY);
   const [fontFamily, setFontFamily] = useState(FONT_FAMILY);
 
+  const { save, undo, redo, canUndo, canRedo, setHistoryIndex, canvasHistory } =
+    useHistory({
+      canvas,
+    });
+
   const { copy, paste } = useClipboard({ canvas });
 
   const { autoZoom } = useAutoResize({ canvas, container });
@@ -533,6 +553,7 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
     canvas,
     setSelectedObjects,
     clearSelectionCallback,
+    save,
   });
 
   const editor = useMemo(() => {
@@ -555,6 +576,11 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
       copy,
       paste,
       autoZoom,
+      save,
+      undo,
+      redo,
+      canUndo,
+      canRedo,
     });
   }, [
     canvas,
@@ -567,6 +593,11 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
     copy,
     paste,
     autoZoom,
+    save,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
   ]);
 
   const init = useCallback(
@@ -604,8 +635,13 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
 
       setCanvas(initialCanvas);
       setContainer(initialContainer);
+
+      const currentState = JSON.stringify(initialCanvas.toJSON());
+      canvasHistory.current = [currentState];
+      setHistoryIndex(0);
     },
-    []
+    // no need because they are from useRef and useState
+    [canvasHistory, setHistoryIndex]
   );
 
   return {

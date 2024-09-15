@@ -75,7 +75,11 @@ export default function Editor() {
 
   return (
     <div className="flex h-dvh flex-col">
-      <Navbar activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />
+      <Navbar
+        activeTool={activeTool}
+        editor={editor}
+        onChangeActiveTool={onChangeActiveTool}
+      />
       <div className="absolute top-[68px] flex h-[calc(100dvh-68px)] w-full">
         <Sidebar
           activeTool={activeTool}

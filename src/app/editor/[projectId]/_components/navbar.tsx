@@ -25,13 +25,19 @@ import {
 import type { MouseEventHandler } from "react";
 import type { ActiveTool } from "../types";
 import { cn } from "@/lib/utils";
+import type { Editor } from "../_hooks/use-editor";
 
 interface NavbarProps {
   activeTool: ActiveTool;
   onChangeActiveTool: (tool: ActiveTool) => void;
+  editor?: Editor;
 }
 
-export function Navbar({ activeTool, onChangeActiveTool }: NavbarProps) {
+export function Navbar({
+  activeTool,
+  onChangeActiveTool,
+  editor,
+}: NavbarProps) {
   return (
     <nav className="flex h-[68px] w-full items-center gap-x-8 border-b p-4">
       <Logo />
@@ -63,9 +69,19 @@ export function Navbar({ activeTool, onChangeActiveTool }: NavbarProps) {
             activeTool === "select" && "bg-gray-100 dark:bg-gray-900"
           )}
         />
-        <NavbarActionButton icon={Undo2} label="Undo" onClick={() => {}} />
+        <NavbarActionButton
+          icon={Undo2}
+          label="Undo"
+          disabled={!editor?.canUndo()}
+          onClick={async () => await editor?.undo()}
+        />
 
-        <NavbarActionButton icon={Redo2} label="Redo" onClick={() => {}} />
+        <NavbarActionButton
+          icon={Redo2}
+          label="Redo"
+          disabled={!editor?.canRedo()}
+          onClick={async () => await editor?.redo()}
+        />
         <VerticalSeparator />
         <div className="flex items-center gap-x-2">
           <Check className="size-4 text-muted-foreground" />
@@ -115,6 +131,7 @@ interface NavbarActionButtonProps {
   icon: LucideIcon;
   onClick: MouseEventHandler<HTMLButtonElement>;
   className?: string;
+  disabled?: boolean;
 }
 
 function NavbarActionButton({
@@ -122,10 +139,12 @@ function NavbarActionButton({
   icon: Icon,
   onClick,
   className,
+  disabled,
 }: NavbarActionButtonProps) {
   return (
     <Hint label={label} side="bottom" sideOffset={10}>
       <Button
+        disabled={disabled}
         variant="ghost"
         size="icon"
         onClick={onClick}

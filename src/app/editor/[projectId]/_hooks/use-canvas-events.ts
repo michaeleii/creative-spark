@@ -7,12 +7,14 @@ interface UseCanvasEventsOptions {
   canvas: Canvas | null;
   setSelectedObjects: Dispatch<SetStateAction<FabricObject[]>>;
   clearSelectionCallback?: () => void;
+  save: () => void;
 }
 
 export function useCanvasEvents({
   canvas,
   setSelectedObjects,
   clearSelectionCallback,
+  save,
 }: UseCanvasEventsOptions) {
   useEffect(() => {
     const clearEvents = canvas?.on({
@@ -26,10 +28,19 @@ export function useCanvasEvents({
         setSelectedObjects([]);
         clearSelectionCallback?.();
       },
+      "object:added": () => {
+        save();
+      },
+      "object:removed": () => {
+        save();
+      },
+      "object:modified": () => {
+        save();
+      },
     });
 
     return () => {
       clearEvents?.();
     };
-  }, [canvas, clearSelectionCallback, setSelectedObjects]);
+  }, [canvas, clearSelectionCallback, setSelectedObjects, save]);
 }
