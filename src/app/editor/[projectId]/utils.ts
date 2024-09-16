@@ -1,4 +1,4 @@
-import { filters } from "fabric";
+import { filters, type FabricObject } from "fabric";
 import type { RGBColor } from "react-color";
 import type { Filter } from "./types";
 
@@ -120,4 +120,37 @@ export function createFilter(value: Filter) {
       return;
   }
   return effect;
+}
+
+export function downloadFile(dataUrl: string, type: string) {
+  const a = document.createElement("a");
+  a.href = dataUrl;
+  a.download = `${generateRandomFileName()}.${type}`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+export function generateRandomFileName() {
+  return Array.from(crypto.getRandomValues(new Uint8Array(15)))
+    .map((b) => b.toString(36).padStart(2, "0"))
+    .join("")
+    .slice(0, 20);
+}
+
+interface CanvasJson extends FabricObject {
+  objects: CanvasJson[];
+}
+
+export function transformText(json: CanvasJson[]) {
+  if (!json) return;
+  json.forEach((item) => {
+    if (item.objects) {
+      transformText(item.objects);
+    } else {
+      if (item.type) {
+        item.type = "textbox";
+      }
+    }
+  });
 }

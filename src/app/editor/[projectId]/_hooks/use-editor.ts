@@ -21,12 +21,19 @@ import {
   Textbox,
   Triangle,
   type Canvas,
+  type TDataUrlOptions,
   type TextboxProps,
   type TOptions,
 } from "fabric";
 import { useAutoResize } from "./use-auto-resize";
 import { useCanvasEvents } from "./use-canvas-events";
-import { createFilter, isTextType } from "../utils";
+import {
+  createFilter,
+  downloadFile,
+  generateRandomFileName,
+  isTextType,
+  transformText,
+} from "../utils";
 import {
   FILL_COLOR,
   FONT_FAMILY,
@@ -50,6 +57,7 @@ import type {
 import useClipboard from "./use-clipboard";
 import { useHistory } from "./use-history";
 import { useHotkeys } from "./use-hotkeys";
+import { useWindowEvents } from "./use-window-events";
 
 interface CustomFabricObjectProps {
   id?: string;
@@ -108,6 +116,64 @@ function buildEditor({
   canUndo,
   canRedo,
 }: BuildEditorProps) {
+  const generateSaveOptions = (): TDataUrlOptions | undefined => {
+    const workspace = getWorkspace();
+    if (!workspace) {
+      return;
+    }
+    const { width, height, left, top } = workspace;
+    return {
+      multiplier: 1,
+      format: "png",
+      quality: 1,
+      width,
+      height,
+      left,
+      top,
+    };
+  };
+
+  const savePNG = () => {
+    const options = generateSaveOptions();
+    if (!options) return;
+    canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+    const dataUrl = canvas.toDataURL(options);
+    downloadFile(dataUrl, "png");
+  };
+  const saveSVG = () => {
+    const options = generateSaveOptions();
+    if (!options) return;
+    canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+    const dataUrl = canvas.toDataURL(options);
+    downloadFile(dataUrl, "svg");
+  };
+  const saveJPG = () => {
+    const options = generateSaveOptions();
+    if (!options) return;
+    canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+    const dataUrl = canvas.toDataURL(options);
+    downloadFile(dataUrl, "jpg");
+  };
+  const saveJSON = async () => {
+    const json = canvas.toJSON();
+    transformText(json.objects);
+    const file = new File(
+      [JSON.stringify(json, null, "\t")],
+      `${generateRandomFileName()}.json`,
+      {
+        type: "text/json;charset=utf-8",
+      }
+    );
+    const dataUrl = URL.createObjectURL(file);
+    downloadFile(dataUrl, "json");
+  };
+
+  const loadJSON = async (file: string) => {
+    const json = JSON.parse(file);
+    await canvas.loadFromJSON(json);
+    autoZoom();
+  };
+
   const getWorkspace = () =>
     canvas.getObjects().find((obj) => obj.name === "clip");
 
@@ -126,6 +192,11 @@ function buildEditor({
   };
 
   return {
+    savePNG,
+    saveJPG,
+    saveSVG,
+    saveJSON,
+    loadJSON,
     canUndo,
     canRedo,
     undo,
@@ -540,6 +611,8 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
   const [strokeWidth, setStrokeWidth] = useState(STROKE_WIDTH);
   const [strokeDashArray, setStrokeDashArray] = useState(STROKE_DASH_ARRAY);
   const [fontFamily, setFontFamily] = useState(FONT_FAMILY);
+
+  useWindowEvents();
 
   const { save, undo, redo, canUndo, canRedo, setHistoryIndex, canvasHistory } =
     useHistory({

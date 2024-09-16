@@ -26,6 +26,7 @@ import type { MouseEventHandler } from "react";
 import type { ActiveTool } from "../types";
 import { cn } from "@/lib/utils";
 import type { Editor } from "../_hooks/use-editor";
+import { useFilePicker } from "use-file-picker";
 
 interface NavbarProps {
   activeTool: ActiveTool;
@@ -38,6 +39,21 @@ export function Navbar({
   onChangeActiveTool,
   editor,
 }: NavbarProps) {
+  const { openFilePicker } = useFilePicker({
+    accept: ".json",
+    onFilesSuccessfullySelected: ({ plainFiles }: { plainFiles?: File[] }) => {
+      if (plainFiles && plainFiles.length > 0) {
+        const file = plainFiles[0];
+        const reader = new FileReader();
+        reader.readAsText(file, "utf-8");
+        reader.onload = () => {
+          if (typeof reader.result === "string") {
+            editor?.loadJSON(reader.result);
+          }
+        };
+      }
+    },
+  });
   return (
     <nav className="flex h-[68px] w-full items-center gap-x-8 border-b p-4">
       <Logo />
@@ -54,9 +70,7 @@ export function Navbar({
               icon={File}
               title="Open"
               description="Open a JSON file"
-              onClick={() => {
-                console.log("Open");
-              }}
+              onClick={() => openFilePicker()}
             />
           </DropdownMenuContent>
         </DropdownMenu>
@@ -104,19 +118,25 @@ export function Navbar({
                 icon={Code2}
                 title="JSON"
                 description="Save for later editing"
-                onClick={() => {}}
+                onClick={() => editor?.saveJSON()}
               />
               <DropdownMenuItemButton
                 icon={ImageIcon}
                 title="PNG"
                 description="Best for sharing on the web"
-                onClick={() => {}}
+                onClick={() => editor?.savePNG()}
+              />
+              <DropdownMenuItemButton
+                icon={ImageIcon}
+                title="JPG"
+                description="Best for printing"
+                onClick={() => editor?.saveJPG()}
               />
               <DropdownMenuItemButton
                 icon={Shapes}
                 title="SVG"
                 description="Best for editing in vector software"
-                onClick={() => {}}
+                onClick={() => editor?.saveSVG()}
               />
             </DropdownMenuContent>
           </DropdownMenu>
