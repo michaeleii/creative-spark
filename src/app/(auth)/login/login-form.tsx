@@ -1,14 +1,20 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { FcGoogle } from "react-icons/fc";
 import { FaDiscord } from "react-icons/fa6";
 import { signIn } from "next-auth/react";
+import { Logo } from "@/components/logo";
 
 export function LoginForm() {
   return (
-    <Card className="pt-6">
+    <Card>
+      <CardHeader>
+        <div className="mx-auto">
+          <Logo />
+        </div>
+      </CardHeader>
       <CardContent>
         <div className="grid gap-4">
           <Button
