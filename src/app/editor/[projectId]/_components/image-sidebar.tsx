@@ -1,3 +1,5 @@
+"use client";
+
 import { ToolSidebarHeader } from "./tool-sidebar-header";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ToolSidebarClose from "./tool-sidebar-close";
@@ -57,8 +59,8 @@ export default function ImageSidebar({
               button: "Upload Image",
             }}
             endpoint="imageUploader"
-            onClientUploadComplete={(res) => {
-              editor.addImage(res[0].url);
+            onClientUploadComplete={async (res) => {
+              await editor.addImage(res[0].url);
             }}
           />
         </div>

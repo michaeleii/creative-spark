@@ -1,6 +1,8 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
+import { verifyAuth } from "@hono/auth-js";
 import { z } from "zod";
+
 import { replicate } from "@/lib/replicate";
 
 const IMAGE_GENERATION_MODEL = "black-forest-labs/flux-schnell";
@@ -10,6 +12,7 @@ const REMOVE_BG_MODEL =
 const app = new Hono()
   .post(
     "/remove-bg",
+    verifyAuth(),
     zValidator(
       "json",
       z.object({
@@ -27,6 +30,7 @@ const app = new Hono()
   )
   .post(
     "/generate",
+    verifyAuth(),
     zValidator(
       "json",
       z.object({
