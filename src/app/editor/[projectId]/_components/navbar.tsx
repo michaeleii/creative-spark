@@ -27,7 +27,7 @@ import type { ActiveTool } from "../types";
 import { cn } from "@/lib/utils";
 import type { Editor } from "../_hooks/use-editor";
 import { useFilePicker } from "use-file-picker";
-import UserButton from "./user-button";
+import UserButton from "@/components/user-button";
 
 interface NavbarProps {
   activeTool: ActiveTool;
