@@ -7,6 +7,7 @@ import authConfig from "@/auth.config";
 import images from "./images";
 import ai from "./ai";
 import users from "./users";
+import projects from "./projects";
 
 export const runtime = "nodejs";
 
@@ -26,7 +27,8 @@ const app = new Hono<{ Bindings: Bindings }>()
   .basePath("/api")
   .route("/images", images)
   .route("/ai", ai)
-  .route("/users", users);
+  .route("/users", users)
+  .route("/projects", projects);
 
 export const GET = handle(app);
 export const POST = handle(app);

@@ -1,7 +1,25 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { useCreateProject } from "../_hooks/use-create-projects";
+import { useRouter } from "next/navigation";
 
 export default function Banner() {
+  const router = useRouter();
+  const { mutate, isPending } = useCreateProject();
+
+  const handleClick = () => {
+    mutate(
+      { name: "Untitled Project", data: "", width: 900, height: 1200 },
+      {
+        onSuccess: (project) => {
+          router.push(`/editor/${project.id}`);
+        },
+      }
+    );
+  };
+
   return (
     <div className="flex aspect-[5/1] min-h-[248px] items-center gap-x-6 rounded-xl bg-gradient-to-r from-[#2e62cb] via-[#0073ff] to-[#3faff5] p-6 text-white">
       <div className="hidden size-28 items-center justify-center rounded-full bg-white md:flex">
@@ -16,7 +34,12 @@ export default function Banner() {
         <p className="mb-2 text-sm">
           Turn your inspiration into design in no time with AI.
         </p>
-        <Button variant="secondary" className="w-[160px] items-center gap-x-2">
+        <Button
+          disabled={isPending}
+          onClick={handleClick}
+          variant="secondary"
+          className="w-[160px] items-center gap-x-2"
+        >
           <span>Start creating</span>
           <ArrowRight className="size-4" />
         </Button>

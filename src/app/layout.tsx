@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import Providers from "@/components/providers";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +24,10 @@ export default async function RootLayout({
     <SessionProvider session={session}>
       <html lang="en" className="h-dvh">
         <body className={cn(inter.className, "h-dvh antialiased")}>
-          <Providers>{children}</Providers>
+          <Providers>
+            {children}
+            <Toaster />
+          </Providers>
         </body>
       </html>
     </SessionProvider>

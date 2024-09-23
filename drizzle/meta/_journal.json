@@ -8,6 +8,27 @@
       "when": 1726595498130,
       "tag": "0000_married_post",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1727073674882,
+      "tag": "0001_talented_wonder_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1727074301856,
+      "tag": "0002_purple_scarlet_spider",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1727074429560,
+      "tag": "0003_chief_mentor",
+      "breakpoints": true
     }
   ]
 }
