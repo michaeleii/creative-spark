@@ -22,8 +22,13 @@ import AISidebar from "./ai-sidebar";
 import RemoveBGSidebar from "./remove-bg-sidebar";
 import DrawingSidebar from "./drawing-sidebar";
 import SettingsSidebar from "./settings-sidebar";
+import type { ResponseType } from "@/app/(dashboard)/_hooks/use-get-project";
 
-export default function Editor() {
+interface EditorProps {
+  project: ResponseType;
+}
+
+export default function Editor({ project }: EditorProps) {
   const [activeTool, setActiveTool] = useState<ActiveTool>("select");
 
   const onClearSelection = useCallback(() => {
