@@ -18,10 +18,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { useDuplicateProject } from "../_hooks/use-duplicate-project";
+import { useDeleteProject } from "../_hooks/use-delete-project";
 
 export default function ProjectsSection() {
   const { data, status, fetchNextPage, isFetchingNextPage, hasNextPage } =
     useGetProjects();
+  const { mutate: copyProject, isPending: isCopying } = useDuplicateProject();
+  const { mutate: deleteProject, isPending: isDeleting } = useDeleteProject();
 
   return (
     <section className="space-y-6">
@@ -57,24 +61,27 @@ export default function ProjectsSection() {
               <div key={project.id} className="space-y-4">
                 <div className="relative h-80 w-full cursor-pointer rounded-lg bg-muted transition-colors hover:bg-slate-200 md:h-64 lg:h-52">
                   <DropdownMenu modal={false}>
-                    <DropdownMenuTrigger className="absolute right-2" asChild>
+                    <DropdownMenuTrigger
+                      className="absolute right-2 top-2"
+                      asChild
+                    >
                       <Button variant="ghost" size="icon" disabled={false}>
                         <MoreHorizontal className="size-4" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-60">
                       <DropdownMenuItem
-                        disabled={false}
-                        onClick={() => {}}
+                        disabled={isCopying}
+                        onClick={() => copyProject({ id: project.id })}
                         className="flex h-10 cursor-pointer items-center gap-2"
                       >
                         <Copy className="size-4" />
                         <span>Make a copy</span>
                       </DropdownMenuItem>
                       <DropdownMenuItem
-                        disabled={false}
-                        onClick={() => {}}
-                        className="flex h-10 cursor-pointer items-center gap-2"
+                        disabled={isDeleting}
+                        onClick={() => deleteProject({ id: project.id })}
+                        className="flex h-10 cursor-pointer items-center gap-2 text-destructive focus:bg-muted focus:text-destructive"
                       >
                         <Trash2 className="size-4" />
                         <span>Delete Project</span>
