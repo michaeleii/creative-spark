@@ -28,8 +28,7 @@ export function useUpdateProject(id: string) {
       return response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: projectKeys.detail(id) });
-      // TODO: invalidate projects query
+      queryClient.invalidateQueries({ queryKey: projectKeys.all });
     },
     onError: () => {
       toast.error("Failed to update project");
