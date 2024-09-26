@@ -38,3 +38,12 @@ export const projectsRelations = relations(projects, ({ one }) => ({
 }));
 
 export const projectsInsertSchema = createInsertSchema(projects);
+export const projectsUpdateSchema = projectsInsertSchema
+  .omit({ id: true, userId: true, createdAt: true, updatedAt: true })
+  .partial();
+
+export const projectSaveSchema = projectsInsertSchema.pick({
+  data: true,
+  width: true,
+  height: true,
+});

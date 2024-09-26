@@ -18,7 +18,7 @@ export function useCreateProject() {
       return response.json();
     },
     onSuccess: () => {
-      toast.success("Project created");
+      toast.success("Project successfully created");
       // TODO: invalidate projects query
     },
     onError: () => {

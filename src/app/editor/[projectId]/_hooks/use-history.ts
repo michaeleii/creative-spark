@@ -1,11 +1,14 @@
-import type { Canvas } from "fabric";
+import type { Canvas, FabricObject } from "fabric";
 import { useCallback, useRef, useState } from "react";
+import type { ProjectSaveSchema } from "../types";
+import { JSON_KEYS } from "../constants";
 
 interface UseHistoryProps {
   canvas: Canvas | null;
+  saveCallback?: (values: ProjectSaveSchema) => void;
 }
 
-export function useHistory({ canvas }: UseHistoryProps) {
+export function useHistory({ canvas, saveCallback }: UseHistoryProps) {
   const [historyIndex, setHistoryIndex] = useState(0);
   const canvasHistory = useRef<string[]>([]);
   const skipSave = useRef(false);
@@ -17,15 +20,28 @@ export function useHistory({ canvas }: UseHistoryProps) {
   const save = useCallback(
     (skip = false) => {
       if (!canvas) return;
-      const currentState = canvas.toJSON();
+      const currentState = canvas.toDatalessJSON(JSON_KEYS);
+      currentState.objects = currentState.objects.map((obj: FabricObject) =>
+        obj.name === "clip"
+          ? {
+              ...obj,
+              selectable: false,
+              hasControls: false,
+            }
+          : obj
+      );
       const stringifiedState = JSON.stringify(currentState);
       if (!skip && !skipSave.current) {
         canvasHistory.current.push(stringifiedState);
         setHistoryIndex(canvasHistory.current.length - 1);
       }
-      // TODO: Save callback
+      const workspace = canvas.getObjects().find((obj) => obj.name === "clip");
+      const width = workspace?.width ?? 0;
+      const height = workspace?.height ?? 0;
+
+      saveCallback?.({ width, height, data: stringifiedState });
     },
-    [canvas]
+    [canvas, saveCallback]
   );
 
   const undo = useCallback(async () => {

@@ -7,7 +7,7 @@ import { Navbar } from "./navbar";
 import Sidebar from "./sidebar";
 import Toolbar from "./toolbar";
 import Footer from "./footer";
-import type { ActiveTool } from "../types";
+import type { ActiveTool, ProjectSaveSchema } from "../types";
 import ShapeSidebar from "./shape-sidebar";
 import FillColorSidebar from "./fill-color-sidebar";
 import { SELECTION_DEPENDENT_TOOLS } from "../constants";
@@ -23,12 +23,25 @@ import RemoveBGSidebar from "./remove-bg-sidebar";
 import DrawingSidebar from "./drawing-sidebar";
 import SettingsSidebar from "./settings-sidebar";
 import type { ResponseType } from "@/app/(dashboard)/_hooks/use-get-project";
+import { useUpdateProject } from "@/app/(dashboard)/_hooks/use-update-project";
+import { useDebounceCallback } from "usehooks-ts";
 
 interface EditorProps {
   project: ResponseType;
 }
 
 export default function Editor({ project }: EditorProps) {
+  const { mutate, isPending, isError } = useUpdateProject(project.id);
+
+  const save = useCallback(
+    (values: ProjectSaveSchema) => {
+      mutate(values);
+    },
+    [mutate]
+  );
+
+  const debouncedSave = useDebounceCallback(save, 1000);
+
   const [activeTool, setActiveTool] = useState<ActiveTool>("select");
 
   const onClearSelection = useCallback(() => {
@@ -38,7 +51,11 @@ export default function Editor({ project }: EditorProps) {
   }, [activeTool]);
 
   const { init, editor } = useEditor({
+    defaultState: project.data,
+    defaultWidth: project.width,
+    defaultHeight: project.height,
     clearSelectionCallback: onClearSelection,
+    saveCallback: debouncedSave,
   });
 
   const onChangeActiveTool = useCallback(
@@ -81,6 +98,8 @@ export default function Editor({ project }: EditorProps) {
   return (
     <div className="flex h-dvh flex-col">
       <Navbar
+        isSaving={isPending}
+        isSavingError={isError}
         activeTool={activeTool}
         editor={editor}
         onChangeActiveTool={onChangeActiveTool}

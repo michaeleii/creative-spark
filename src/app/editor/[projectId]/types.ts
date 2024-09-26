@@ -1,4 +1,6 @@
+import type { z } from "zod";
 import type { BRUSH_TYPES, FILTERS } from "./constants";
+import type { projectSaveSchema } from "@/db/schema/projects";
 
 export type ActiveTool =
   | "select"
@@ -29,3 +31,5 @@ export type TextAlign = "left" | "center" | "right";
 export type Filter = (typeof FILTERS)[number];
 
 export type BrushType = (typeof BRUSH_TYPES)[number];
+
+export type ProjectSaveSchema = z.infer<typeof projectSaveSchema>;

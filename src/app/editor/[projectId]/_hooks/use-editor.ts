@@ -6,6 +6,7 @@ import {
   useMemo,
   type Dispatch,
   type SetStateAction,
+  useRef,
 } from "react";
 import {
   Circle,
@@ -39,6 +40,7 @@ import {
   FONT_FAMILY,
   FONT_SIZE,
   FONT_WEIGHT_NORMAL,
+  JSON_KEYS,
   MAX_ZOOM_RATIO,
   MIN_ZOOM_RATIO,
   STROKE_COLOR,
@@ -52,12 +54,13 @@ import type {
   Filter,
   FontStyle,
   FontWeight,
+  ProjectSaveSchema,
   TextAlign,
 } from "../types";
 import useClipboard from "./use-clipboard";
 import { useHistory } from "./use-history";
 import { useHotkeys } from "./use-hotkeys";
-import { useWindowEvents } from "./use-window-events";
+import useLoadState from "./use-load-state";
 
 interface CustomFabricObjectProps {
   id?: string;
@@ -155,7 +158,7 @@ function buildEditor({
     downloadFile(dataUrl, "jpg");
   };
   const saveJSON = async () => {
-    const json = canvas.toJSON();
+    const json = canvas.toDatalessJSON(JSON_KEYS);
     transformText(json.objects);
     const file = new File(
       [JSON.stringify(json, null, "\t")],
@@ -598,10 +601,24 @@ function buildEditor({
 export type Editor = ReturnType<typeof buildEditor>;
 
 interface UseEditorOptions {
+  defaultState?: string;
+  defaultWidth?: number;
+  defaultHeight?: number;
   clearSelectionCallback?: () => void;
+  saveCallback?: (values: ProjectSaveSchema) => void;
 }
 
-export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
+export function useEditor({
+  defaultState,
+  defaultWidth,
+  defaultHeight,
+  clearSelectionCallback,
+  saveCallback,
+}: UseEditorOptions) {
+  const initialState = useRef(defaultState);
+  const initialWidth = useRef(defaultWidth);
+  const initialHeight = useRef(defaultHeight);
+
   const [canvas, setCanvas] = useState<Canvas | null>(null);
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const [selectedObjects, setSelectedObjects] = useState<FabricObject[]>([]);
@@ -612,11 +629,10 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
   const [strokeDashArray, setStrokeDashArray] = useState(STROKE_DASH_ARRAY);
   const [fontFamily, setFontFamily] = useState(FONT_FAMILY);
 
-  useWindowEvents();
-
   const { save, undo, redo, canUndo, canRedo, setHistoryIndex, canvasHistory } =
     useHistory({
       canvas,
+      saveCallback,
     });
 
   const { copy, paste } = useClipboard({ canvas });
@@ -631,6 +647,14 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
   });
 
   useHotkeys({ canvas, undo, redo, copy, paste, save });
+
+  useLoadState({
+    canvas,
+    autoZoom,
+    canvasHistory,
+    initialState,
+    setHistoryIndex,
+  });
 
   const editor = useMemo(() => {
     if (!canvas) {
@@ -688,18 +712,20 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
         borderOpacityWhenMoving: 1,
         cornerStrokeColor: "#3b82f6",
       };
+
       const initialWorkspace = new Rect({
-        name: "clip",
-        width: 900,
-        height: 1200,
-        fill: "white",
         selectable: false,
         hasControls: false,
+        fill: "white",
+        width: initialWidth.current,
+        height: initialHeight.current,
+        name: "clip",
         shadow: new Shadow({
           color: "rgba(0,0,0,0.8)",
           blur: 5,
         }),
       });
+
       initialCanvas.setDimensions({
         width: initialContainer.offsetWidth,
         height: initialContainer.offsetHeight,
@@ -712,7 +738,9 @@ export function useEditor({ clearSelectionCallback }: UseEditorOptions) {
       setCanvas(initialCanvas);
       setContainer(initialContainer);
 
-      const currentState = JSON.stringify(initialCanvas.toJSON());
+      const currentState = JSON.stringify(
+        initialCanvas.toDatalessJSON(JSON_KEYS)
+      );
       canvasHistory.current = [currentState];
       setHistoryIndex(0);
     },

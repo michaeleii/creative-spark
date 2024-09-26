@@ -16,6 +16,7 @@ import {
   Download,
   File,
   ImageIcon,
+  Loader,
   MousePointerClick,
   Redo2,
   Shapes,
@@ -28,14 +29,19 @@ import { cn } from "@/lib/utils";
 import type { Editor } from "../_hooks/use-editor";
 import { useFilePicker } from "use-file-picker";
 import UserButton from "@/components/user-button";
+import { BsCloudSlash } from "react-icons/bs";
 
 interface NavbarProps {
+  isSaving: boolean;
+  isSavingError: boolean;
   activeTool: ActiveTool;
   onChangeActiveTool: (tool: ActiveTool) => void;
   editor?: Editor;
 }
 
 export function Navbar({
+  isSaving,
+  isSavingError,
   activeTool,
   onChangeActiveTool,
   editor,
@@ -98,10 +104,24 @@ export function Navbar({
           onClick={async () => await editor?.redo()}
         />
         <VerticalSeparator />
-        <div className="flex items-center gap-x-2">
-          <Check className="size-4 text-muted-foreground" />
-          <p className="text-xs text-muted-foreground">Saved</p>
-        </div>
+        {isSaving && (
+          <div className="flex items-center gap-x-2">
+            <Loader className="size-4 animate-spin text-muted-foreground" />
+            <p className="text-xs text-muted-foreground">Saving...</p>
+          </div>
+        )}
+        {!isSaving && isSavingError && (
+          <div className="flex items-center gap-x-2">
+            <BsCloudSlash className="size-5 text-muted-foreground" />
+            <p className="text-xs text-muted-foreground">Failed to Save</p>
+          </div>
+        )}
+        {!isSaving && !isSavingError && (
+          <div className="flex items-center gap-x-2">
+            <Check className="size-5 text-muted-foreground" />
+            <p className="text-xs text-muted-foreground">Saved</p>
+          </div>
+        )}
         <div className="ml-auto flex items-center gap-x-4">
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>

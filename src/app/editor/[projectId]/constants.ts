@@ -95,3 +95,14 @@ export const MIN_ZOOM_RATIO = 0.2;
 export const MAX_ZOOM_RATIO = 2;
 export const ZOOM_IN_RATIO = 0.5;
 export const ZOOM_OUT_RATIO = 0.5;
+
+export const JSON_KEYS = [
+  "name",
+  "gradientAngle",
+  "selectable",
+  "hasControls",
+  "linkData",
+  "editable",
+  "extensionType",
+  "extension",
+];
