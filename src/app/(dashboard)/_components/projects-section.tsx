@@ -20,12 +20,17 @@ import {
 import { Button } from "@/components/ui/button";
 import { useDuplicateProject } from "../_hooks/use-duplicate-project";
 import { useDeleteProject } from "../_hooks/use-delete-project";
+import useConfirm from "@/hooks/use-confirm";
 
 export default function ProjectsSection() {
   const { data, status, fetchNextPage, isFetchingNextPage, hasNextPage } =
     useGetProjects();
   const { mutate: copyProject, isPending: isCopying } = useDuplicateProject();
   const { mutate: deleteProject, isPending: isDeleting } = useDeleteProject();
+  const [ConfirmationDialog, confirm] = useConfirm({
+    title: "Are you sure?",
+    message: "You are about to delete this project",
+  });
 
   return (
     <section className="space-y-6">
@@ -56,6 +61,7 @@ export default function ProjectsSection() {
         </div>
       ) : (
         <div>
+          <ConfirmationDialog />
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
             {data.pages.at(0)?.result.map((project) => (
               <div key={project.id} className="space-y-4">
@@ -80,7 +86,12 @@ export default function ProjectsSection() {
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         disabled={isDeleting}
-                        onClick={() => deleteProject({ id: project.id })}
+                        onClick={async () => {
+                          const ok = await confirm();
+                          if (ok) {
+                            deleteProject({ id: project.id });
+                          }
+                        }}
                         className="flex h-10 cursor-pointer items-center gap-2 text-destructive focus:bg-muted focus:text-destructive"
                       >
                         <Trash2 className="size-4" />
