@@ -21,7 +21,7 @@ export default function useConfirm({ title, message }: UseConfirmProps) {
     resolve: (value: boolean) => void;
   } | null>(null);
 
-  const confirm = async () => new Promise((resolve) => setPromise({ resolve }));
+  const confirm = () => new Promise((resolve) => setPromise({ resolve }));
 
   const handleClose = () => {
     setPromise(null);

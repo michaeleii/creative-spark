@@ -6,11 +6,36 @@ import {
 } from "@/db/schema/projects";
 import { verifyAuth } from "@hono/auth-js";
 import { zValidator } from "@hono/zod-validator";
-import { and, desc, eq } from "drizzle-orm";
+import { and, asc, desc, eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
 
 const app = new Hono()
+  .get(
+    "/templates",
+    verifyAuth(),
+    zValidator(
+      "query",
+      z.object({
+        page: z.coerce.number(),
+        limit: z.coerce.number(),
+      })
+    ),
+    async (c) => {
+      const { page, limit } = c.req.valid("query");
+      const result = await db
+        .select()
+        .from(projects)
+        .where(eq(projects.isTemplate, true))
+        .limit(limit)
+        .offset((page - 1) * limit)
+        .orderBy(asc(projects.isPro), desc(projects.updatedAt));
+      if (!result) {
+        return c.json({ error: "No Templates" }, 404);
+      }
+      return c.json(result, 200);
+    }
+  )
   .delete(
     "/:id",
     verifyAuth(),
@@ -97,7 +122,9 @@ const app = new Hono()
       const result = await db
         .select()
         .from(projects)
-        .where(eq(projects.userId, auth.user.id))
+        .where(
+          and(eq(projects.userId, auth.user.id), eq(projects.isTemplate, false))
+        )
         .limit(limit)
         .offset((page - 1) * limit)
         .orderBy(desc(projects.updatedAt));
@@ -186,6 +213,8 @@ const app = new Hono()
           data,
           width,
           height,
+          isPro: false,
+          isTemplate: false,
           userId: auth.user.id,
         })
         .returning()
