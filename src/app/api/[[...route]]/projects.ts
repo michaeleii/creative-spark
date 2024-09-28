@@ -6,7 +6,7 @@ import {
 } from "@/db/schema/projects";
 import { verifyAuth } from "@hono/auth-js";
 import { zValidator } from "@hono/zod-validator";
-import { and, asc, desc, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
 
@@ -29,7 +29,7 @@ const app = new Hono()
         .where(eq(projects.isTemplate, true))
         .limit(limit)
         .offset((page - 1) * limit)
-        .orderBy(asc(projects.isPro), desc(projects.updatedAt));
+        .orderBy(desc(projects.isPro), desc(projects.updatedAt));
       if (!result) {
         return c.json({ error: "No Templates" }, 404);
       }
