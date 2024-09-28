@@ -3,6 +3,7 @@
 import {
   AlertTriangle,
   Copy,
+  ImageIcon,
   MoreHorizontal,
   Search,
   Trash2,
@@ -21,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { useDuplicateProject } from "../_hooks/use-duplicate-project";
 import { useDeleteProject } from "../_hooks/use-delete-project";
 import useConfirm from "@/hooks/use-confirm";
+import Link from "next/link";
 
 export default function ProjectsSection() {
   const { data, status, fetchNextPage, isFetchingNextPage, hasNextPage } =
@@ -54,7 +56,7 @@ export default function ProjectsSection() {
             Failed to load projects
           </p>
         </div>
-      ) : !data.pages.length ? (
+      ) : !data.pages.length || !data.pages[0].result.length ? (
         <div className="flex flex-col items-center justify-center gap-y-4 pt-32">
           <Search className="size-6 text-muted-foreground" />
           <p className="text-sm text-muted-foreground">No projects found</p>
@@ -64,49 +66,57 @@ export default function ProjectsSection() {
           <ConfirmationDialog />
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
             {data.pages.at(0)?.result.map((project) => (
-              <div key={project.id} className="space-y-4">
-                <div className="relative h-80 w-full cursor-pointer rounded-lg bg-muted transition-colors hover:bg-slate-200 md:h-64 lg:h-52">
-                  <DropdownMenu modal={false}>
-                    <DropdownMenuTrigger
-                      className="absolute right-2 top-2"
-                      asChild
+              <div key={project.id} className="relative space-y-4">
+                <DropdownMenu modal={false}>
+                  <DropdownMenuTrigger
+                    className="absolute right-2 top-2 z-20"
+                    asChild
+                  >
+                    <Button variant="ghost" size="icon" disabled={false}>
+                      <MoreHorizontal className="size-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-60">
+                    <DropdownMenuItem
+                      disabled={isCopying}
+                      onClick={() => copyProject({ id: project.id })}
+                      className="flex h-10 cursor-pointer items-center gap-2"
                     >
-                      <Button variant="ghost" size="icon" disabled={false}>
-                        <MoreHorizontal className="size-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-60">
-                      <DropdownMenuItem
-                        disabled={isCopying}
-                        onClick={() => copyProject({ id: project.id })}
-                        className="flex h-10 cursor-pointer items-center gap-2"
-                      >
-                        <Copy className="size-4" />
-                        <span>Make a copy</span>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        disabled={isDeleting}
-                        onClick={async () => {
-                          const ok = await confirm();
-                          if (ok) {
-                            deleteProject({ id: project.id });
-                          }
-                        }}
-                        className="flex h-10 cursor-pointer items-center gap-2 text-destructive focus:bg-muted focus:text-destructive"
-                      >
-                        <Trash2 className="size-4" />
-                        <span>Delete Project</span>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                  <Image
-                    src={project.thumbnailUrl ?? "/placeholder_thumbnail.svg"}
-                    alt="Thumbnail"
-                    width={900}
-                    height={1200}
-                    className="mx-auto h-full w-full rounded-lg object-contain"
-                  />
-                </div>
+                      <Copy className="size-4" />
+                      <span>Make a copy</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      disabled={isDeleting}
+                      onClick={async () => {
+                        const ok = await confirm();
+                        if (ok) {
+                          deleteProject({ id: project.id });
+                        }
+                      }}
+                      className="flex h-10 cursor-pointer items-center gap-2 text-destructive focus:bg-muted focus:text-destructive"
+                    >
+                      <Trash2 className="size-4" />
+                      <span>Delete Project</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <Link href={`/editor/${project.id}`}>
+                  <div className="h-80 w-full cursor-pointer rounded-lg bg-muted transition-colors hover:bg-slate-200 md:h-64 lg:h-52">
+                    {project.thumbnailUrl ? (
+                      <Image
+                        src={project.thumbnailUrl}
+                        alt="Thumbnail"
+                        width={900}
+                        height={1200}
+                        className="mx-auto h-full w-full rounded-lg object-contain"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center">
+                        <ImageIcon className="size-20 text-muted-foreground" />
+                      </div>
+                    )}
+                  </div>
+                </Link>
                 <div className="flex flex-col gap-2">
                   <span>{project.name}</span>
                   <span className="text-sm text-muted-foreground">{`${project.width} x ${project.height}`}</span>
