@@ -25,6 +25,7 @@ import SettingsSidebar from "./settings-sidebar";
 import type { ResponseType } from "@/app/(dashboard)/_hooks/use-get-project";
 import { useUpdateProject } from "@/app/(dashboard)/_hooks/use-update-project";
 import { useDebounceCallback } from "usehooks-ts";
+import TemplateSidebar from "./template-sidebar";
 
 interface EditorProps {
   project: ResponseType;
@@ -147,6 +148,11 @@ export default function Editor({ project }: EditorProps) {
               onChangeActiveTool={onChangeActiveTool}
             />
             <ImageSidebar
+              editor={editor}
+              activeTool={activeTool}
+              onChangeActiveTool={onChangeActiveTool}
+            />
+            <TemplateSidebar
               editor={editor}
               activeTool={activeTool}
               onChangeActiveTool={onChangeActiveTool}
