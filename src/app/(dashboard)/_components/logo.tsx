@@ -1,14 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
+import { business } from "@/constants";
 
 export default function Logo() {
   return (
     <Link href="/">
       <div className="flex h-[68px] items-center gap-x-2 px-4 transition hover:opacity-75">
-        <div className="relative size-8">
-          <Image src="/logo.svg" alt="The Drawing Board" fill />
+        <div className="relative size-10">
+          <Image src="/logo.png" alt={`${business.name} logo`} fill />
         </div>
-        <h1 className="text-xl font-bold">The Drawing Board</h1>
+        <h1 className="text-xl font-bold">{business.name}</h1>
       </div>
     </Link>
   );

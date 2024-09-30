@@ -6,12 +6,13 @@ import Providers from "@/components/providers";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "@/components/ui/sonner";
+import { business } from "@/constants";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "The Drawing Board",
-  description: "Create whatever you want",
+  title: business.name,
+  description: business.description,
 };
 
 export default async function RootLayout({

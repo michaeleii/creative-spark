@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { useCreateProject } from "../_hooks/use-create-project";
 import { useRouter } from "next/navigation";
+import { business } from "@/constants";
 
 export default function Banner() {
   const router = useRouter();
@@ -29,7 +30,7 @@ export default function Banner() {
       </div>
       <div className="flex flex-col gap-y-2">
         <h1 className="text-2xl font-semibold md:text-3xl">
-          Visualize your ideas with The Drawing Board
+          Visualize your ideas with {business.name}
         </h1>
         <p className="mb-2 text-sm">
           Turn your inspiration into design in no time with AI.
