@@ -1,19 +1,6 @@
 "use client";
-import dynamic from "next/dynamic";
 
-const ChromePicker = dynamic(
-  () => import("react-color").then(({ ChromePicker }) => ChromePicker),
-  {
-    ssr: false,
-  }
-);
-
-const CirclePicker = dynamic(
-  () => import("react-color").then(({ CirclePicker }) => CirclePicker),
-  {
-    ssr: false,
-  }
-);
+import { ChromePicker, CirclePicker } from "react-color";
 
 import { rgbaObjectToString } from "../utils";
 import { COLORS } from "../constants";
