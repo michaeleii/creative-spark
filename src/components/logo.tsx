@@ -4,7 +4,7 @@ import { business } from "@/constants";
 export function Logo() {
   return (
     <Link href="/">
-      <div className="relative size-8 shrink-0">
+      <div className="relative size-20 shrink-0">
         <Image
           src="/logo.png"
           alt={`${business.name} Logo`}
