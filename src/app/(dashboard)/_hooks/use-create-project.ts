@@ -23,7 +23,8 @@ export function useCreateProject() {
       toast.success("Project successfully created");
       queryClient.invalidateQueries({ queryKey: projectKeys.all });
     },
-    onError: () => {
+    onError: (error) => {
+      console.log(error.message);
       toast.error("Failed to create project");
     },
   });
