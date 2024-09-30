@@ -1,8 +1,8 @@
 function getSiteUrl() {
-  switch (process.env.VERCEL_ENV) {
+  switch (process.env.NODE_ENV) {
     case "production":
       return `https://creative-spark.vercel.app`;
-    case "preview":
+    case "test":
       return `https://${process.env.VERCEL_PROJECT_PREVIEW_URL}`;
     default:
       return "http://localhost:3000";
