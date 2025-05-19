@@ -6,8 +6,8 @@ export default function Logo() {
   return (
     <Link href="/">
       <div className="my-4 flex h-[68px] items-center gap-x-2 transition hover:opacity-75">
-        <div className="relative size-20">
-          <Image src="/logo.png" alt={`${business.name} logo`} fill />
+        <div className="relative size-10">
+          <Image src="/logo.svg" alt={`${business.name} logo`} fill />
         </div>
         <h1 className="hidden text-xl font-bold tracking-tighter sm:block">
           {business.name}
