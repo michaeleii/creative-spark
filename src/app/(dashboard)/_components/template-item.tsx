@@ -2,7 +2,7 @@ import Image from "next/image";
 import type { ResponseType } from "../_hooks/use-get-templates";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Crown, SquareArrowOutUpRight } from "lucide-react";
+import { SquareArrowOutUpRight } from "lucide-react";
 
 export type Template = ResponseType[number];
 interface TemplateItemProps {
@@ -37,11 +37,11 @@ export function TemplateItem({
             fill
             className="transform object-cover transition group-hover:scale-105"
           />
-          {template.isPro && (
+          {/* {template.isPro && (
             <div className="absolute right-2 top-2 z-10 flex size-10 items-center justify-center rounded-full bg-black/50">
               <Crown className="size-6 fill-yellow-500 text-yellow-500" />
             </div>
-          )}
+          )} */}
           <div className="absolute inset-0 flex items-center justify-center gap-2 rounded-xl bg-black/50 opacity-0 backdrop-blur-sm backdrop-filter transition group-hover:opacity-100">
             <span className="font-medium text-white">Open in Editor</span>
             <SquareArrowOutUpRight className="size-4 text-white" />
