@@ -29,7 +29,7 @@ export function TemplateItem({
       {template.thumbnailUrl && (
         <div
           style={{ aspectRatio: `${template.width}/${template.height}` }}
-          className="relative h-full w-full overflow-hidden rounded-xl border"
+          className="relative h-full w-[300px] overflow-hidden rounded-xl border"
         >
           <Image
             src={template.thumbnailUrl}

@@ -7,7 +7,7 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
-    <main className="min-h-dvh border p-8 pt-0">
+    <main className="min-h-dvh space-y-8">
       <Navbar />
       {children}
     </main>

@@ -40,7 +40,7 @@ export default function TemplateSection() {
     <section className="space-y-6">
       <h3 className="text-lg font-semibold">Start with a template</h3>
       <div>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+        <div className="flex gap-6">
           {isLoading ? (
             Array.from({ length: 4 }).map((_, i) => (
               <TemplateItemSkeleton key={i} />
