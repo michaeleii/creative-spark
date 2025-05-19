@@ -5,10 +5,9 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { CreditCard, Loader2, LogOut } from "lucide-react";
+import { Loader2, LogOut } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 
 export default function UserButton() {
@@ -37,7 +36,7 @@ export default function UserButton() {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-60">
-        <DropdownMenuItem
+        {/* <DropdownMenuItem
           disabled={false}
           onClick={() => {}}
           className="flex h-10 items-center gap-2"
@@ -45,7 +44,7 @@ export default function UserButton() {
           <CreditCard className="size-4" />
           <span>Billing</span>
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator /> */}
         <DropdownMenuItem
           disabled={false}
           onClick={async () => await signOut()}
