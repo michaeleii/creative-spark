@@ -139,7 +139,7 @@ const app = new Hono()
     "/:id",
     verifyAuth,
     zValidator("param", z.object({ id: z.string() })),
-    zValidator("json", projectsUpdateSchema as any),
+    zValidator("json", projectsUpdateSchema),
     async (c) => {
       const user = c.get("user");
       const { id } = c.req.valid("param");
@@ -196,7 +196,7 @@ const app = new Hono()
         data: true,
         width: true,
         height: true,
-      }) as any
+      })
     ),
     async (c) => {
       const user = c.get("user");
