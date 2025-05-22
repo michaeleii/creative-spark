@@ -14,8 +14,11 @@ export default function ShapeTool({
   className,
 }: ShapeToolProps) {
   return (
-    <button onClick={onClick} className="aspect-square rounded-md border p-5">
-      <Icon className={cn("h-full w-full", className)} />
+    <button
+      onClick={onClick}
+      className="aspect-square rounded-md border p-5 bg-white"
+    >
+      <Icon className={cn("h-full w-full fill-black", className)} />
     </button>
   );
 }
