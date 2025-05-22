@@ -41,7 +41,7 @@ Creative Spark is a modern, full-stack web application for creating, editing, an
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/your-username/creative-spark.git
+   git clone https://github.com/michaeleii/creative-spark.git
    cd creative-spark
    ```
 
