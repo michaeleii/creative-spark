@@ -27,7 +27,7 @@ export default function ImageSidebar({
   return (
     <aside
       className={cn(
-        "relative z-[40] flex h-[calc(100dvh-68px)] w-[360px] flex-col border-r bg-background",
+        "relative z-40 flex h-[calc(100dvh-68px)] w-[360px] flex-col border-r bg-background",
         activeTool === "images" ? "visible" : "hidden"
       )}
     >

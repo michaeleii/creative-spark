@@ -49,7 +49,7 @@ export default function RemoveBGSidebar({
   return (
     <aside
       className={cn(
-        "relative z-[40] flex h-[calc(100dvh-68px)] w-[360px] flex-col border-r bg-background",
+        "relative z-40 flex h-[calc(100dvh-68px)] w-[360px] flex-col border-r bg-background",
         activeTool === "remove-bg" ? "visible" : "hidden"
       )}
     >
