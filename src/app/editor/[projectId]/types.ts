@@ -1,6 +1,6 @@
 import type { z } from "zod";
 import type { BRUSH_TYPES, FILTERS } from "./constants";
-import type { projectSaveSchema } from "@/db/schema/projects";
+import type { projectSaveSchema } from "@/db/schema";
 
 export type ActiveTool =
   | "select"

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { FcGoogle } from "react-icons/fc";
 import { FaDiscord } from "react-icons/fa6";
-import { signIn } from "next-auth/react";
+import { signIn } from "@/lib/auth-client";
 import { Logo } from "@/components/logo";
 
 export function LoginForm() {
@@ -18,7 +18,11 @@ export function LoginForm() {
       <CardContent>
         <div className="grid gap-4">
           <Button
-            onClick={() => signIn("google")}
+            onClick={async () =>
+              signIn.social({
+                provider: "google",
+              })
+            }
             size="lg"
             className="flex w-full items-center gap-4"
           >
@@ -26,7 +30,11 @@ export function LoginForm() {
             Login with Google
           </Button>
           <Button
-            onClick={() => signIn("discord")}
+            onClick={async () =>
+              signIn.social({
+                provider: "discord",
+              })
+            }
             size="lg"
             className="flex w-full items-center gap-4"
           >

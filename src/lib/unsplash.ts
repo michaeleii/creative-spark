@@ -1,6 +1,6 @@
-import { processEnv } from "@/env";
+import { env } from "@/env";
 import { createApi } from "unsplash-js";
 
 export const unsplash = createApi({
-  accessKey: processEnv.UNSPLASH_ACCESS_KEY,
+  accessKey: env.UNSPLASH_ACCESS_KEY,
 });

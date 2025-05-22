@@ -11,6 +11,7 @@ import { AlertTriangle, Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { UploadButton } from "@/lib/uploadthing";
+import { twMerge } from "tailwind-merge";
 
 interface ImageSidebarProps {
   activeTool: ActiveTool;
@@ -27,7 +28,7 @@ export default function ImageSidebar({
   return (
     <aside
       className={cn(
-        "relative z-[40] flex h-[calc(100dvh-68px)] w-[360px] flex-col border-r bg-background",
+        "relative z-40 flex h-[calc(100dvh-68px)] w-[360px] flex-col border-r bg-background",
         activeTool === "images" ? "visible" : "hidden"
       )}
     >
@@ -51,6 +52,7 @@ export default function ImageSidebar({
       <ScrollArea>
         <div className="border-b p-4">
           <UploadButton
+            config={{ cn: twMerge }}
             appearance={{
               button: "w-full text-sm font-medium",
               allowedContent: "hidden",

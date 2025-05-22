@@ -1,15 +1,19 @@
 import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import Providers from "@/components/providers";
-import { auth } from "@/auth";
-import { SessionProvider } from "next-auth/react";
-import { Toaster } from "@/components/ui/sonner";
+import QueryProvider from "@/components/query-provider";
 import { business } from "@/constants";
+import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "next-themes";
 
-import { DM_Sans } from "next/font/google";
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
 
-const dmSans = DM_Sans({
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
@@ -18,22 +22,32 @@ export const metadata: Metadata = {
   description: business.description,
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
   return (
-    <SessionProvider session={session}>
-      <html lang="en" className="h-dvh">
-        <body className={cn(dmSans.className, "h-dvh antialiased")}>
-          <Providers>
+    <html lang="en" className="h-dvh" suppressHydrationWarning>
+      <body
+        className={cn(
+          geistSans.variable,
+          geistMono.variable,
+          `h-dvh antialiased`
+        )}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <QueryProvider>
             {children}
             <Toaster />
-          </Providers>
-        </body>
-      </html>
-    </SessionProvider>
+          </QueryProvider>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }

@@ -68,8 +68,10 @@ interface CustomFabricObjectProps {
 }
 
 declare module "fabric" {
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   interface FabricObject extends CustomFabricObjectProps {}
-  interface SerializedOjectProps extends CustomFabricObjectProps {}
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  interface SerializedObjectProps extends CustomFabricObjectProps {}
 }
 
 FabricObject.customProperties = ["id", "name"];

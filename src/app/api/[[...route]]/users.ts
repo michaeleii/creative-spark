@@ -1,15 +1,15 @@
-import { verifyAuth } from "@hono/auth-js";
+import { verifyAuth } from "./middleware";
 import { Hono } from "hono";
 
-const app = new Hono().get("/profile", verifyAuth(), (c) => {
-  const auth = c.get("authUser");
+const app = new Hono().get("/profile", verifyAuth, (c) => {
+  const user = c.get("user");
 
-  if (!auth.session) {
+  if (!user) {
     return c.json({ error: "Unauthorized" }, 401);
   }
 
   return c.json({
-    user: auth.session.user,
+    user,
   });
 });
 

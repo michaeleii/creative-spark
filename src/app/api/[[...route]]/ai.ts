@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
-import { verifyAuth } from "@hono/auth-js";
+import { verifyAuth } from "./middleware";
 import { z } from "zod";
 
 import { replicate } from "@/lib/replicate";
@@ -12,7 +12,7 @@ const REMOVE_BG_MODEL =
 const app = new Hono()
   .post(
     "/remove-bg",
-    verifyAuth(),
+    verifyAuth,
     zValidator(
       "json",
       z.object({
@@ -30,7 +30,7 @@ const app = new Hono()
   )
   .post(
     "/generate",
-    verifyAuth(),
+    verifyAuth,
     zValidator(
       "json",
       z.object({

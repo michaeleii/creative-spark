@@ -1,4 +1,4 @@
 export const business = {
   name: "Creative Spark",
-  description: "Create whatever you want",
+  description: "Imagine it. Create it.",
 };

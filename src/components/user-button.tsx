@@ -8,21 +8,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Loader2, LogOut } from "lucide-react";
-import { useSession, signOut } from "next-auth/react";
+import { useSession, signOut } from "@/lib/auth-client";
 
 export default function UserButton() {
   const session = useSession();
 
-  if (session.status === "loading") {
+  if (session.isPending && !session) {
     return <Loader2 className="size-4 animate-spin text-muted-foreground" />;
   }
 
-  if (session.status === "unauthenticated" || !session.data) {
+  if (session.error || !session.data) {
     return null;
   }
 
-  const name = session.data.user?.name ?? "";
-  const image = session.data.user?.image ?? "";
+  const name = session.data.user.name;
+  const image = session.data.user.image ?? "";
 
   return (
     <DropdownMenu modal={false}>

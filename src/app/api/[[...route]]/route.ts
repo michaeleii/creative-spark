@@ -1,29 +1,30 @@
-import { Hono, type Context } from "hono";
+import { Hono } from "hono";
 import { handle } from "hono/vercel";
-
-import { initAuthConfig, type AuthConfig } from "@hono/auth-js";
-import authConfig from "@/auth.config";
 
 import images from "./images";
 import ai from "./ai";
 import users from "./users";
 import projects from "./projects";
+import { auth, type AuthType } from "@/lib/auth";
 
 export const runtime = "nodejs";
 
-type Bindings = {
-  AUTH_SECRET: string;
-};
+export type Env = { Variables: AuthType };
 
-function getAuthConfig(c: Context<{ Bindings: Bindings }>): AuthConfig {
-  return {
-    secret: c.env.AUTH_SECRET,
-    ...authConfig,
-  };
-}
+const app = new Hono<Env>()
+  .use("*", async (c, next) => {
+    const session = await auth.api.getSession({ headers: c.req.raw.headers });
 
-const app = new Hono<{ Bindings: Bindings }>()
-  .use("*", initAuthConfig(getAuthConfig))
+    if (!session) {
+      c.set("user", null);
+      c.set("session", null);
+      return next();
+    }
+
+    c.set("user", session.user);
+    c.set("session", session.session);
+    return next();
+  })
   .basePath("/api")
   .route("/images", images)
   .route("/ai", ai)
