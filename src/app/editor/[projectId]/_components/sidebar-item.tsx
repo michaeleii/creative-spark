@@ -20,7 +20,7 @@ export function SidebarItem({
     <Button
       variant="ghost"
       className={cn(
-        "flex aspect-video h-full w-full flex-col rounded-none p-3 py-4",
+        "flex aspect-video w-full h-[76px] flex-col rounded-none  gap-0",
         {
           "bg-muted text-primary": isActive,
         }

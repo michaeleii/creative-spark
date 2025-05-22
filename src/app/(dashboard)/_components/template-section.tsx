@@ -14,7 +14,7 @@ export default function TemplateSection() {
   const { mutate: createProject, isPending } = useCreateProject();
   const { data, isLoading, isError } = useGetTemplates({
     page: "1",
-    limit: "4",
+    limit: "5",
   });
 
   const handleClick = (template: Template) => {

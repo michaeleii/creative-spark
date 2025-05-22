@@ -13,7 +13,7 @@ import { useSession, signOut } from "@/lib/auth-client";
 export default function UserButton() {
   const session = useSession();
 
-  if (session.isPending) {
+  if (session.isPending && !session) {
     return <Loader2 className="size-4 animate-spin text-muted-foreground" />;
   }
 
