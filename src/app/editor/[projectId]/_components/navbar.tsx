@@ -106,20 +106,20 @@ export function Navbar({
         <VerticalSeparator />
         {isSaving && (
           <div className="flex items-center gap-x-2">
-            <Loader className="size-4 animate-spin text-muted-foreground" />
-            <p className="text-xs text-muted-foreground">Saving...</p>
+            <Loader className="text-muted-foreground size-4 animate-spin" />
+            <p className="text-muted-foreground text-xs">Saving...</p>
           </div>
         )}
         {!isSaving && isSavingError && (
           <div className="flex items-center gap-x-2">
-            <BsCloudSlash className="size-5 text-muted-foreground" />
-            <p className="text-xs text-muted-foreground">Failed to Save</p>
+            <BsCloudSlash className="text-muted-foreground size-5" />
+            <p className="text-muted-foreground text-xs">Failed to Save</p>
           </div>
         )}
         {!isSaving && !isSavingError && (
           <div className="flex items-center gap-x-2">
-            <Check className="size-5 text-muted-foreground" />
-            <p className="text-xs text-muted-foreground">Saved</p>
+            <Check className="text-muted-foreground size-5" />
+            <p className="text-muted-foreground text-xs">Saved</p>
           </div>
         )}
         <div className="ml-auto flex items-center gap-x-4">
@@ -220,7 +220,7 @@ function DropdownMenuItemButton({
       <Icon className="size-6" />
       <div>
         <p>{title}</p>
-        <p className="text-xs text-muted-foreground">{description}</p>
+        <p className="text-muted-foreground text-xs">{description}</p>
       </div>
     </DropdownMenuItem>
   );

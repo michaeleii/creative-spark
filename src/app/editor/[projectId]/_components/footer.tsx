@@ -9,7 +9,7 @@ interface FooterProps {
 
 export default function Footer({ editor }: FooterProps) {
   return (
-    <footer className="z-49 flex h-[52px] w-full shrink-0 flex-row-reverse items-center gap-x-1 overflow-x-auto border-t bg-background p-2 px-4">
+    <footer className="bg-background z-49 flex h-[52px] w-full shrink-0 flex-row-reverse items-center gap-x-1 overflow-x-auto border-t p-2 px-4">
       <Hint label="Reset" side="top" sideOffset={10}>
         <Button
           onClick={() => editor?.autoZoom()}

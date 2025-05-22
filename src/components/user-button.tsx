@@ -14,7 +14,7 @@ export default function UserButton() {
   const session = useSession();
 
   if (session.isPending && !session) {
-    return <Loader2 className="size-4 animate-spin text-muted-foreground" />;
+    return <Loader2 className="text-muted-foreground size-4 animate-spin" />;
   }
 
   if (session.error || !session.data) {

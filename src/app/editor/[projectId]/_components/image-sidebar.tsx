@@ -28,7 +28,7 @@ export default function ImageSidebar({
   return (
     <aside
       className={cn(
-        "relative z-40 flex h-[calc(100dvh-68px)] w-[360px] flex-col border-r bg-background",
+        "bg-background relative z-40 flex h-[calc(100dvh-68px)] w-[360px] flex-col border-r",
         activeTool === "images" ? "visible" : "hidden"
       )}
     >
@@ -38,13 +38,13 @@ export default function ImageSidebar({
       />
       {isLoading && (
         <div className="flex flex-1 items-center justify-center">
-          <Loader2 className="animate-spin text-muted-foreground" />
+          <Loader2 className="text-muted-foreground animate-spin" />
         </div>
       )}
       {isError && (
         <div className="flex flex-1 flex-col items-center justify-center gap-2 gap-y-4">
           <AlertTriangle className="text-muted-foreground" />
-          <p className="text-xs text-muted-foreground">
+          <p className="text-muted-foreground text-xs">
             Failed to fetch images
           </p>
         </div>
@@ -75,7 +75,7 @@ export default function ImageSidebar({
                   onClick={async () => {
                     await editor.addImage(image.urls.regular);
                   }}
-                  className="group relative h-[150px] w-full overflow-hidden rounded-sm border bg-muted transition hover:opacity-75"
+                  className="group bg-muted relative h-[150px] w-full overflow-hidden rounded-sm border transition hover:opacity-75"
                 >
                   <Image
                     fill
@@ -86,7 +86,7 @@ export default function ImageSidebar({
                   <Link
                     href={image.links.html}
                     target="_blank"
-                    className="absolute bottom-0 left-0 w-full truncate bg-black/50 p-1 text-left text-xs text-white opacity-0 transition-opacity hover:underline group-hover:opacity-100"
+                    className="absolute bottom-0 left-0 w-full truncate bg-black/50 p-1 text-left text-xs text-white opacity-0 transition-opacity group-hover:opacity-100 hover:underline"
                   >
                     {image.user.name}
                   </Link>

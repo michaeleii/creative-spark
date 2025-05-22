@@ -20,7 +20,7 @@ export default function TextSidebar({
   return (
     <aside
       className={cn(
-        "relative z-40 flex h-[calc(100dvh-68px)] w-[360px] flex-col border-r bg-background",
+        "bg-background relative z-40 flex h-[calc(100dvh-68px)] w-[360px] flex-col border-r",
         activeTool === "text" ? "visible" : "hidden"
       )}
     >

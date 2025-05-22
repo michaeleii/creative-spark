@@ -24,7 +24,7 @@ export function ProjectItem({ project, confirm }: ProjectItemProps) {
   return (
     <div className="relative space-y-4">
       <DropdownMenu modal={false}>
-        <DropdownMenuTrigger className="absolute right-2 top-2 z-10" asChild>
+        <DropdownMenuTrigger className="absolute top-2 right-2 z-10" asChild>
           <Button variant="ghost" size="icon" disabled={false}>
             <MoreHorizontal className="size-4" />
           </Button>
@@ -46,7 +46,7 @@ export function ProjectItem({ project, confirm }: ProjectItemProps) {
                 deleteProject({ id: project.id });
               }
             }}
-            className="flex h-10 cursor-pointer items-center gap-2 text-destructive focus:bg-muted focus:text-destructive"
+            className="text-destructive focus:bg-muted focus:text-destructive flex h-10 cursor-pointer items-center gap-2"
           >
             <Trash2 className="size-4" />
             <span>Delete Project</span>
@@ -54,7 +54,7 @@ export function ProjectItem({ project, confirm }: ProjectItemProps) {
         </DropdownMenuContent>
       </DropdownMenu>
       <Link href={`/editor/${project.id}`}>
-        <div className="h-80 w-full cursor-pointer rounded-lg bg-muted transition-colors hover:bg-slate-200 md:h-64 lg:h-52">
+        <div className="bg-muted h-80 w-full cursor-pointer rounded-lg transition-colors hover:bg-slate-200 md:h-64 lg:h-52">
           {project.thumbnailUrl ? (
             <Image
               src={project.thumbnailUrl}
@@ -65,14 +65,14 @@ export function ProjectItem({ project, confirm }: ProjectItemProps) {
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center">
-              <ImageIcon className="size-20 text-muted-foreground" />
+              <ImageIcon className="text-muted-foreground size-20" />
             </div>
           )}
         </div>
       </Link>
       <div className="flex flex-col gap-2">
         <span>{project.name}</span>
-        <span className="text-sm text-muted-foreground">{`${project.width} x ${project.height}`}</span>
+        <span className="text-muted-foreground text-sm">{`${project.width} x ${project.height}`}</span>
       </div>
     </div>
   );

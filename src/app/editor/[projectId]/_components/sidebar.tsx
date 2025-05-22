@@ -20,7 +20,7 @@ export default function Sidebar({
   onChangeActiveTool,
 }: SidebarProps) {
   return (
-    <aside className="flex h-[calc(100dvh-68px)] w-[100px] flex-col overflow-y-auto border-r bg-background">
+    <aside className="bg-background flex h-[calc(100dvh-68px)] w-[100px] flex-col overflow-y-auto border-r">
       <ul className="flex flex-col">
         <SidebarItem
           icon={LayoutTemplate}

@@ -13,7 +13,7 @@ export function Hint({ label, children, ...props }: HintProps) {
       <Tooltip delayDuration={100}>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
         <TooltipContent
-          className="border-slate-800 bg-slate-800 text-primary-foreground dark:border-slate-200 dark:bg-slate-200"
+          className="text-primary-foreground border-slate-800 bg-slate-800 dark:border-slate-200 dark:bg-slate-200"
           {...props}
         >
           <p className="font-semibold capitalize">{label}</p>

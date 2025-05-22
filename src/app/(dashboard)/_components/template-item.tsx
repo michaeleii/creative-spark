@@ -50,7 +50,7 @@ export function TemplateItem({
       )}
       <div className="space-y-2">
         <p>{template.name}</p>
-        <p className="text-sm text-muted-foreground">{`${template.width} x ${template.height} px`}</p>
+        <p className="text-muted-foreground text-sm">{`${template.width} x ${template.height} px`}</p>
       </div>
     </button>
   );

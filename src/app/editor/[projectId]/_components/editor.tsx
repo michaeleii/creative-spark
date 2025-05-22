@@ -184,7 +184,7 @@ export default function Editor({ project }: EditorProps) {
             />
           </>
         )}
-        <main className="relative flex flex-1 flex-col overflow-auto bg-muted">
+        <main className="bg-muted relative flex flex-1 flex-col overflow-auto">
           <Toolbar
             key={JSON.stringify(editor?.canvas.getActiveObject())}
             editor={editor}
@@ -192,7 +192,7 @@ export default function Editor({ project }: EditorProps) {
             onChangeActiveTool={onChangeActiveTool}
           />
           <div
-            className="h-[calc(100dvh-176px)] flex-1 bg-muted"
+            className="bg-muted h-[calc(100dvh-176px)] flex-1"
             ref={containerRef}
           >
             <canvas ref={canvasRef} />

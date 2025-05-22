@@ -26,15 +26,15 @@ export default function ProjectsSection() {
         </div>
       ) : status === "error" ? (
         <div className="flex flex-col items-center justify-center gap-y-4 pt-32">
-          <AlertTriangle className="size-6 text-muted-foreground" />
-          <p className="text-sm text-muted-foreground">
+          <AlertTriangle className="text-muted-foreground size-6" />
+          <p className="text-muted-foreground text-sm">
             Failed to load projects
           </p>
         </div>
       ) : !data.pages.length || !data.pages[0].result.length ? (
         <div className="flex flex-col items-center justify-center gap-y-4 pt-32">
-          <Search className="size-6 text-muted-foreground" />
-          <p className="text-sm text-muted-foreground">No projects found</p>
+          <Search className="text-muted-foreground size-6" />
+          <p className="text-muted-foreground text-sm">No projects found</p>
         </div>
       ) : (
         <div>

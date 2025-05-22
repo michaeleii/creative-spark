@@ -17,7 +17,7 @@ export default function EditorProjectIdPageWrapper({
   if (isLoading || !project) {
     return (
       <div className="flex h-dvh flex-col items-center justify-center">
-        <Loader2 className="size-6 animate-spin text-muted-foreground" />
+        <Loader2 className="text-muted-foreground size-6 animate-spin" />
       </div>
     );
   }
@@ -25,8 +25,8 @@ export default function EditorProjectIdPageWrapper({
   if (isError) {
     return (
       <div className="flex h-dvh flex-col items-center justify-center">
-        <TriangleAlert className="size-6 text-muted-foreground" />
-        <p className="text-sm text-muted-foreground">Failed to fetch project</p>
+        <TriangleAlert className="text-muted-foreground size-6" />
+        <p className="text-muted-foreground text-sm">Failed to fetch project</p>
         <Button variant="secondary" asChild>
           <Link href="/">Back to home</Link>
         </Button>

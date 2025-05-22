@@ -49,7 +49,7 @@ export default function RemoveBGSidebar({
   return (
     <aside
       className={cn(
-        "relative z-40 flex h-[calc(100dvh-68px)] w-[360px] flex-col border-r bg-background",
+        "bg-background relative z-40 flex h-[calc(100dvh-68px)] w-[360px] flex-col border-r",
         activeTool === "remove-bg" ? "visible" : "hidden"
       )}
     >
@@ -59,7 +59,7 @@ export default function RemoveBGSidebar({
       />
       {!imageSrc && (
         <div className="flex flex-1 flex-col items-center justify-center gap-y-4">
-          <AlertTriangle className="size-4 text-muted-foreground" />
+          <AlertTriangle className="text-muted-foreground size-4" />
           <p>Feature not avaliable for this object. Please select an image.</p>
         </div>
       )}
@@ -68,7 +68,7 @@ export default function RemoveBGSidebar({
           <div className="space-y-4 p-4">
             <div
               className={cn(
-                "relative aspect-square overflow-hidden rounded-md bg-muted transition",
+                "bg-muted relative aspect-square overflow-hidden rounded-md transition",
                 isPending && "opacity-50"
               )}
             >

@@ -35,7 +35,7 @@ export default function TemplateSidebar({
   return (
     <aside
       className={cn(
-        "relative z-40 flex h-[calc(100dvh-68px)] w-[360px] flex-col border-r bg-background",
+        "bg-background relative z-40 flex h-[calc(100dvh-68px)] w-[360px] flex-col border-r",
         activeTool === "templates" ? "visible" : "hidden"
       )}
     >
@@ -46,13 +46,13 @@ export default function TemplateSidebar({
       />
       {isLoading && (
         <div className="flex flex-1 items-center justify-center">
-          <Loader2 className="animate-spin text-muted-foreground" />
+          <Loader2 className="text-muted-foreground animate-spin" />
         </div>
       )}
       {isError && (
         <div className="flex flex-1 flex-col items-center justify-center gap-2 gap-y-4">
           <AlertTriangle className="text-muted-foreground" />
-          <p className="text-xs text-muted-foreground">
+          <p className="text-muted-foreground text-xs">
             Failed to fetch templates
           </p>
         </div>
@@ -76,7 +76,7 @@ export default function TemplateSidebar({
                       await editor.loadJSON(template.data);
                     }
                   }}
-                  className="group relative w-full overflow-hidden rounded-sm border bg-muted transition hover:opacity-75"
+                  className="group bg-muted relative w-full overflow-hidden rounded-sm border transition hover:opacity-75"
                 >
                   {template.thumbnailUrl && (
                     <Image
