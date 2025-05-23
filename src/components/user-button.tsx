@@ -5,13 +5,17 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Loader2, LogOut } from "lucide-react";
 import { useSession, signOut } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export default function UserButton() {
   const session = useSession();
+  const router = useRouter();
 
   if (session.isPending && !session) {
     return <Loader2 className="text-muted-foreground size-4 animate-spin" />;
@@ -20,9 +24,9 @@ export default function UserButton() {
   if (session.error || !session.data) {
     return null;
   }
-
-  const name = session.data.user.name;
-  const image = session.data.user.image ?? "";
+  const user = session.data.user;
+  const name = user.name;
+  const image = user.image ?? "";
 
   return (
     <DropdownMenu modal={false}>
@@ -36,6 +40,13 @@ export default function UserButton() {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-60">
+        <DropdownMenuLabel>{name}</DropdownMenuLabel>
+        {!user.isAnonymous && (
+          <DropdownMenuLabel className="text-muted-foreground text-xs">
+            {user.email}
+          </DropdownMenuLabel>
+        )}
+        <DropdownMenuSeparator />
         {/* <DropdownMenuItem
           disabled={false}
           onClick={() => {}}
@@ -47,7 +58,15 @@ export default function UserButton() {
         <DropdownMenuSeparator /> */}
         <DropdownMenuItem
           disabled={false}
-          onClick={async () => await signOut()}
+          onClick={async () =>
+            signOut({
+              fetchOptions: {
+                onSuccess: () => {
+                  router.refresh();
+                },
+              },
+            })
+          }
           className="flex h-10 items-center gap-2"
         >
           <LogOut className="size-4" />
