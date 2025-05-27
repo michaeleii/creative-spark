@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Loader2, LogOut } from "lucide-react";
-import { useSession, signOut } from "@/lib/auth-client";
+import { deleteUser, useSession, signOut } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 
 export default function UserButton() {
@@ -58,15 +58,20 @@ export default function UserButton() {
         <DropdownMenuSeparator /> */}
         <DropdownMenuItem
           disabled={false}
-          onClick={async () =>
-            signOut({
+          onClick={async () => {
+            if (user.isAnonymous) {
+              await deleteUser({
+                callbackURL: "/login",
+              });
+            }
+            await signOut({
               fetchOptions: {
                 onSuccess: () => {
                   router.refresh();
                 },
               },
-            })
-          }
+            });
+          }}
           className="flex h-10 items-center gap-2"
         >
           <LogOut className="size-4" />
