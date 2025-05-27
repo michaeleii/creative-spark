@@ -63,6 +63,7 @@ export default function UserButton() {
               await deleteUser({
                 callbackURL: "/login",
               });
+              router.refresh();
             }
             await signOut({
               fetchOptions: {
