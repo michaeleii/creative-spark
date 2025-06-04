@@ -39,11 +39,10 @@ const app = new Hono()
     ),
     async (c) => {
       const { prompt } = c.req.valid("json");
-      const output: unknown = await replicate.run(IMAGE_GENERATION_MODEL, {
+      const [output]: any = await replicate.run(IMAGE_GENERATION_MODEL, {
         input: { prompt },
       });
-      const res = output as string[];
-      return c.json({ image: res[0] });
+      return c.json({ image: output.url() });
     }
   );
 
