@@ -107,14 +107,3 @@ public/               # Static assets (images, favicon, etc.)
 
 Refer to the `.env.example` file for the required environment variables.
 
-## Contributing
-
-Contributions are welcome! Please open issues or submit pull requests for new features, bug fixes, or improvements.
-
-## License
-
-[MIT](LICENSE)
-
----
-
-Built with ❤️ by the Creative Spark team.
