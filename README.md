@@ -1,6 +1,6 @@
 # Creative Spark
 
-Creative Spark is a modern, full-stack web application for creating, editing, and managing creative projects.
+Effortlessly create, edit, and manage stunning projects with a powerful editor, AI-powered tools, and a sleek dashboard. Whether you’re an artist, designer, or innovator, Creative Spark gives you everything you need to unleash your imagination and turn inspiration into reality.
 
 ## Features
 
@@ -98,4 +98,3 @@ public/               # Static assets (images, favicon, etc.)
 ## Environment Variables
 
 Refer to the `.env.example` file for the required environment variables.
-
