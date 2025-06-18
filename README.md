@@ -1,6 +1,6 @@
 # Creative Spark
 
-Effortlessly create, edit, and manage stunning projects with a powerful editor, AI-powered tools, and a sleek dashboard. Whether you’re an artist, designer, or innovator, Creative Spark gives you everything you need to unleash your imagination and turn inspiration into reality.
+Effortlessly create, edit, and manage stunning projects with a powerful editor, AI-powered image generation, and a sleek dashboard. Whether you’re an artist, designer, or innovator, Creative Spark gives you everything you need to unleash your imagination and turn inspiration into reality.
 
 ## Features
 
