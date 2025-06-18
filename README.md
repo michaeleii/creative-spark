@@ -1,6 +1,6 @@
 # Creative Spark
 
-Creative Spark is a modern, full-stack web application for creating, editing, and managing creative projects. It features a powerful editor with AI-assisted tools, image management, and a customizable dashboard. Built with Next.js, React, Drizzle ORM, and a suite of modern libraries, Creative Spark is designed for creators who want a seamless, collaborative, and extensible platform.
+Creative Spark is a modern, full-stack web application for creating, editing, and managing creative projects.
 
 ## Features
 
@@ -48,10 +48,6 @@ Creative Spark is a modern, full-stack web application for creating, editing, an
 2. **Install dependencies:**
 
    ```bash
-   npm install
-   # or
-   yarn install
-   # or
    bun install
    ```
 
@@ -62,17 +58,13 @@ Creative Spark is a modern, full-stack web application for creating, editing, an
 4. **Run database migrations:**
 
    ```bash
-   npx drizzle-kit push
+   bun db:push
    ```
 
 5. **Start the development server:**
 
    ```bash
-   npm run dev
-   # or
-   yarn dev
-   # or
-   bun run dev
+   bun dev
    ```
 
 6. **Open the app:**
